@@ -4,12 +4,16 @@ import com.hanjeokseoul.quietseoul.domain.UserEntity;
 import com.hanjeokseoul.quietseoul.dto.UserRegisterRequest;
 import com.hanjeokseoul.quietseoul.dto.UserResponse;
 import com.hanjeokseoul.quietseoul.dto.UserLoginRequest;
+import com.hanjeokseoul.quietseoul.security.JwtTokenProvider;
 import com.hanjeokseoul.quietseoul.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+
 import java.util.Map;
 
 @RestController
@@ -18,6 +22,8 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(description = "사용자 회원가입을 처리합니다.")
     @PostMapping("/register")
@@ -29,14 +35,19 @@ public class UserController {
     @Operation(description = "username과 password를 통해 JWT 토큰을 발급받습니다.")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequest request) {
-        String token = userService.login(request);
-        return ResponseEntity.ok().body(Map.of("token", token));
+        // AuthenticationManager로 인증 처리
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+
+        // 인증 성공 시 JWT 발급
+        String token = jwtTokenProvider.createToken(request.getUsername());
+        return ResponseEntity.ok(Map.of("token", token));
     }
 
     @PostMapping("/logout")
     @Operation(description = "클라이언트에서 JWT 삭제 (실제 토큰 무효화 X)")
     public ResponseEntity<?> logout() {
-        // JWT는 서버에서 상태를 저장하지 않기 때문에 실제로 할 일은 없음.
         return ResponseEntity.ok(Map.of("message", "로그아웃 완료. 클라이언트에서 토큰 삭제해주세요."));
     }
 
