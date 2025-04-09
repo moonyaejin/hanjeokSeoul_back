@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -27,26 +26,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String path = request.getRequestURI();
-        if (path.startsWith("/api/login") ||
-                path.startsWith("/api/users/register") ||
-                path.startsWith("/swagger") ||
-                path.startsWith("/v3/api-docs") ||
-                path.startsWith("/h2-console")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String token = resolveToken(request);
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String username = jwtTokenProvider.getUsername(token);
-            System.out.println("🔍 토큰에서 꺼낸 username: " + username);
+            var userDetails = userDetailsService.loadUserByUsername(username);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            System.out.println("✅ 사용자 조회 성공 여부: " + userDetails);
-
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            var auth = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities()
+            );
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 
