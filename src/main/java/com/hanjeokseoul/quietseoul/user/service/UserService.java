@@ -1,9 +1,9 @@
-package com.hanjeokseoul.quietseoul.service;
+package com.hanjeokseoul.quietseoul.user.service;
 
-import com.hanjeokseoul.quietseoul.domain.UserEntity;
-import com.hanjeokseoul.quietseoul.dto.UserRegisterRequest;
-import com.hanjeokseoul.quietseoul.repository.UserRepository;
-import com.hanjeokseoul.quietseoul.dto.UserUpdateRequest;
+import com.hanjeokseoul.quietseoul.user.domain.UserEntity;
+import com.hanjeokseoul.quietseoul.user.dto.UserRegisterRequest;
+import com.hanjeokseoul.quietseoul.user.repository.UserRepository;
+import com.hanjeokseoul.quietseoul.user.dto.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,9 @@ public class UserService {
         user.setPhone(request.getPhone());
         user.setBirthdate(request.getBirthdate());
         user.setGender(request.getGender());
-        user.setRole("USER");
+        user.setRole(request.getRole());
+
+        // user.setRole("USER");
 
         return userRepository.save(user);
     }

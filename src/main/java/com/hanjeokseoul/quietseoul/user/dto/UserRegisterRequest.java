@@ -1,15 +1,16 @@
-package com.hanjeokseoul.quietseoul.dto;
+package com.hanjeokseoul.quietseoul.user.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
-public class UserResponse {
-    private String id;
+@Setter
+public class UserRegisterRequest {
     private String username;
+    private String password;
     private String name;
     private String phone;
     private String birthdate;
     private String gender;
+    private String role;
 }

@@ -1,12 +1,12 @@
-package com.hanjeokseoul.quietseoul.controller;
+package com.hanjeokseoul.quietseoul.user.controller;
 
-import com.hanjeokseoul.quietseoul.domain.UserEntity;
-import com.hanjeokseoul.quietseoul.dto.UserRegisterRequest;
-import com.hanjeokseoul.quietseoul.dto.UserUpdateRequest;
-import com.hanjeokseoul.quietseoul.dto.UserResponse;
-import com.hanjeokseoul.quietseoul.dto.UserLoginRequest;
+import com.hanjeokseoul.quietseoul.user.domain.UserEntity;
+import com.hanjeokseoul.quietseoul.user.dto.UserRegisterRequest;
+import com.hanjeokseoul.quietseoul.user.dto.UserUpdateRequest;
+import com.hanjeokseoul.quietseoul.user.dto.UserResponse;
+import com.hanjeokseoul.quietseoul.user.dto.UserLoginRequest;
 import com.hanjeokseoul.quietseoul.security.JwtTokenProvider;
-import com.hanjeokseoul.quietseoul.service.UserService;
+import com.hanjeokseoul.quietseoul.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
