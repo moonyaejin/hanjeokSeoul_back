@@ -2,6 +2,7 @@ package com.hanjeokseoul.quietseoul.controller;
 
 import com.hanjeokseoul.quietseoul.domain.UserEntity;
 import com.hanjeokseoul.quietseoul.dto.UserRegisterRequest;
+import com.hanjeokseoul.quietseoul.dto.UserUpdateRequest;
 import com.hanjeokseoul.quietseoul.dto.UserResponse;
 import com.hanjeokseoul.quietseoul.dto.UserLoginRequest;
 import com.hanjeokseoul.quietseoul.security.JwtTokenProvider;
@@ -29,7 +30,14 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody UserRegisterRequest request) {
         UserEntity user = userService.register(request);
-        return ResponseEntity.ok(new UserResponse(user.getId(), user.getUsername(), user.getName()));
+        return ResponseEntity.ok(new UserResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getName(),
+                user.getPhone(),
+                user.getBirthdate(),
+                user.getGender()
+        ));
     }
 
     @Operation(description = "username과 password를 통해 JWT 토큰을 발급받습니다.")
@@ -55,6 +63,31 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getMyInfo(Authentication authentication) {
         UserEntity user = (UserEntity) authentication.getPrincipal();
-        return ResponseEntity.ok(new UserResponse(user.getId(), user.getUsername(), user.getName()));
+        return ResponseEntity.ok(new UserResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getName(),
+                user.getPhone(),
+                user.getBirthdate(),
+                user.getGender()
+        ));
+    }
+
+    @PatchMapping("/me")
+    @Operation(summary = "내 정보 수정", description = "사용자의 이름과 비밀번호를 수정합니다.")
+    public ResponseEntity<UserResponse> updateMyInfo(
+            @RequestBody UserUpdateRequest request,
+            Authentication authentication
+    ) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        UserEntity updatedUser = userService.updateUser(user.getId(), request);
+        return ResponseEntity.ok(new UserResponse(
+                updatedUser.getId(),
+                updatedUser.getUsername(),
+                updatedUser.getName(),
+                updatedUser.getPhone(),
+                updatedUser.getBirthdate(),
+                updatedUser.getGender()
+        ));
     }
 }

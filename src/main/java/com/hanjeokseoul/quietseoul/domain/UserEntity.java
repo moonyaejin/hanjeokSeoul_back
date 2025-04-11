@@ -25,6 +25,9 @@ public class UserEntity implements UserDetails {
     private String password;
     private String name;
     private String role;
+    private String phone;
+    private String birthdate;
+    private String gender;
 
     // Spring Security 관련 메서드 구현
     @Override

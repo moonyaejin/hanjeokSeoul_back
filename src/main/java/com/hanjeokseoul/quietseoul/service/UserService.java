@@ -3,6 +3,7 @@ package com.hanjeokseoul.quietseoul.service;
 import com.hanjeokseoul.quietseoul.domain.UserEntity;
 import com.hanjeokseoul.quietseoul.dto.UserRegisterRequest;
 import com.hanjeokseoul.quietseoul.repository.UserRepository;
+import com.hanjeokseoul.quietseoul.dto.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,35 @@ public class UserService {
 
         UserEntity user = new UserEntity();
         user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setName(request.getName());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPhone(request.getPhone());
+        user.setBirthdate(request.getBirthdate());
+        user.setGender(request.getGender());
         user.setRole("USER");
+
+        return userRepository.save(user);
+    }
+
+    public UserEntity updateUser(String id, UserUpdateRequest request) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            user.setName(request.getName());
+        }
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+        if (request.getPhone() != null) {
+            user.setPhone(request.getPhone());
+        }
+        if (request.getBirthdate() != null) {
+            user.setBirthdate(request.getBirthdate());
+        }
+        if (request.getGender() != null) {
+            user.setGender(request.getGender());
+        }
 
         return userRepository.save(user);
     }
