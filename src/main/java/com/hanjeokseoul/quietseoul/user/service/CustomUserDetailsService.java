@@ -1,6 +1,6 @@
-package com.hanjeokseoul.quietseoul.service;
+package com.hanjeokseoul.quietseoul.user.service;
 
-import com.hanjeokseoul.quietseoul.repository.UserRepository;
+import com.hanjeokseoul.quietseoul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
