@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class UserController {
 
     @Operation(description = "사용자 회원가입을 처리합니다.")
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody UserRegisterRequest request) {
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody UserRegisterRequest request) {
         UserEntity user = userService.register(request);
         return ResponseEntity.ok(new UserResponse(
                 user.getId(),

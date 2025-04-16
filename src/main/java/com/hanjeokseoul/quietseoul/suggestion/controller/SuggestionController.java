@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import java.util.Map;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/suggestions")
@@ -21,7 +22,7 @@ public class SuggestionController {
 
     @PostMapping
     public ResponseEntity<SuggestionResponse> createSuggestion(
-            @RequestBody SuggestionRequest request,
+            @Valid @RequestBody SuggestionRequest request,
             Authentication authentication
     ) {
         UserEntity user = (UserEntity) authentication.getPrincipal();

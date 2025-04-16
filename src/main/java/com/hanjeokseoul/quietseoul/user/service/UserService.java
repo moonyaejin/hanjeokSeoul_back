@@ -27,9 +27,9 @@ public class UserService {
         user.setPhone(request.getPhone());
         user.setBirthdate(request.getBirthdate());
         user.setGender(request.getGender());
-        user.setRole(request.getRole());
+        // user.setRole(request.getRole());
 
-        // user.setRole("USER");
+        user.setRole("USER");
 
         return userRepository.save(user);
     }
