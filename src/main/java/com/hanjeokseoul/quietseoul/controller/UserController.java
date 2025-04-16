@@ -1,12 +1,12 @@
-package com.hanjeokseoul.quietseoul.user.controller;
+package com.hanjeokseoul.quietseoul.controller;
 
-import com.hanjeokseoul.quietseoul.user.domain.UserEntity;
-import com.hanjeokseoul.quietseoul.user.dto.UserRegisterRequest;
-import com.hanjeokseoul.quietseoul.user.dto.UserUpdateRequest;
-import com.hanjeokseoul.quietseoul.user.dto.UserResponse;
-import com.hanjeokseoul.quietseoul.user.dto.UserLoginRequest;
+import com.hanjeokseoul.quietseoul.domain.UserEntity;
+import com.hanjeokseoul.quietseoul.dto.UserRegisterRequest;
+import com.hanjeokseoul.quietseoul.dto.UserUpdateRequest;
+import com.hanjeokseoul.quietseoul.dto.UserResponse;
+import com.hanjeokseoul.quietseoul.dto.UserLoginRequest;
 import com.hanjeokseoul.quietseoul.security.JwtTokenProvider;
-import com.hanjeokseoul.quietseoul.user.service.UserService;
+import com.hanjeokseoul.quietseoul.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -77,7 +77,7 @@ public class UserController {
     @PatchMapping("/me")
     @Operation(summary = "내 정보 수정", description = "사용자의 이름과 비밀번호를 수정합니다.")
     public ResponseEntity<UserResponse> updateMyInfo(
-            @RequestBody UserUpdateRequest request,
+            @Valid @RequestBody UserUpdateRequest request,
             Authentication authentication
     ) {
         UserEntity user = (UserEntity) authentication.getPrincipal();

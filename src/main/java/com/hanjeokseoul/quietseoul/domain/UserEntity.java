@@ -1,4 +1,4 @@
-package com.hanjeokseoul.quietseoul.user.domain;
+package com.hanjeokseoul.quietseoul.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

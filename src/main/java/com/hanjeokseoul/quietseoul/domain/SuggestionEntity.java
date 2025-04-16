@@ -1,6 +1,5 @@
-package com.hanjeokseoul.quietseoul.suggestion.domain;
+package com.hanjeokseoul.quietseoul.domain;
 
-import com.hanjeokseoul.quietseoul.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,9 +1,9 @@
-package com.hanjeokseoul.quietseoul.suggestion.service;
+package com.hanjeokseoul.quietseoul.service;
 
-import com.hanjeokseoul.quietseoul.suggestion.dto.SuggestionRequest;
-import com.hanjeokseoul.quietseoul.suggestion.domain.SuggestionEntity;
-import com.hanjeokseoul.quietseoul.user.domain.UserEntity;
-import com.hanjeokseoul.quietseoul.suggestion.repository.SuggestionRepository;
+import com.hanjeokseoul.quietseoul.dto.SuggestionRequest;
+import com.hanjeokseoul.quietseoul.domain.SuggestionEntity;
+import com.hanjeokseoul.quietseoul.domain.UserEntity;
+import com.hanjeokseoul.quietseoul.repository.SuggestionRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

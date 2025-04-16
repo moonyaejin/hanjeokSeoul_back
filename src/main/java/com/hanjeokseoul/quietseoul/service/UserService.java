@@ -1,9 +1,9 @@
-package com.hanjeokseoul.quietseoul.user.service;
+package com.hanjeokseoul.quietseoul.service;
 
-import com.hanjeokseoul.quietseoul.user.domain.UserEntity;
-import com.hanjeokseoul.quietseoul.user.dto.UserRegisterRequest;
-import com.hanjeokseoul.quietseoul.user.repository.UserRepository;
-import com.hanjeokseoul.quietseoul.user.dto.UserUpdateRequest;
+import com.hanjeokseoul.quietseoul.domain.UserEntity;
+import com.hanjeokseoul.quietseoul.dto.UserRegisterRequest;
+import com.hanjeokseoul.quietseoul.dto.UserUpdateRequest;
+import com.hanjeokseoul.quietseoul.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,9 +27,7 @@ public class UserService {
         user.setPhone(request.getPhone());
         user.setBirthdate(request.getBirthdate());
         user.setGender(request.getGender());
-        // user.setRole(request.getRole());
-
-        user.setRole("USER");
+        user.setRole("USER"); // 기본값 고정
 
         return userRepository.save(user);
     }
@@ -44,13 +42,13 @@ public class UserService {
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
-        if (request.getPhone() != null) {
+        if (request.getPhone() != null && !request.getPhone().isBlank()) {
             user.setPhone(request.getPhone());
         }
-        if (request.getBirthdate() != null) {
+        if (request.getBirthdate() != null && !request.getBirthdate().isBlank()) {
             user.setBirthdate(request.getBirthdate());
         }
-        if (request.getGender() != null) {
+        if (request.getGender() != null && !request.getGender().isBlank()) {
             user.setGender(request.getGender());
         }
 

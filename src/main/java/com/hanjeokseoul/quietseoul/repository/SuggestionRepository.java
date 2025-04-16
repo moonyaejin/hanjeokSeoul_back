@@ -1,6 +1,6 @@
-package com.hanjeokseoul.quietseoul.suggestion.repository;
+package com.hanjeokseoul.quietseoul.repository;
 
-import com.hanjeokseoul.quietseoul.suggestion.domain.SuggestionEntity;
+import com.hanjeokseoul.quietseoul.domain.SuggestionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SuggestionRepository extends JpaRepository<SuggestionEntity, String> {

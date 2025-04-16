@@ -1,4 +1,4 @@
-package com.hanjeokseoul.quietseoul.suggestion.dto;
+package com.hanjeokseoul.quietseoul.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

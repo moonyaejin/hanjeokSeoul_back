@@ -1,6 +1,6 @@
-package com.hanjeokseoul.quietseoul.user.repository;
+package com.hanjeokseoul.quietseoul.repository;
 
-import com.hanjeokseoul.quietseoul.user.domain.UserEntity;
+import com.hanjeokseoul.quietseoul.domain.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
