@@ -1,4 +1,4 @@
-package com.hanjeokseoul.quietseoul.dto;
+package com.hanjeokseoul.quietseoul.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,4 +9,7 @@ public class UserResponse {
     private String id;
     private String username;
     private String name;
+    private String phone;
+    private String birthdate;
+    private String gender;
 }
