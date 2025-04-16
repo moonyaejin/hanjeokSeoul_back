@@ -1,4 +1,4 @@
-package com.hanjeokseoul.quietseoul.suggestion.dto;
+package com.hanjeokseoul.quietseoul.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.hanjeokseoul.quietseoul.user.dto;
+package com.hanjeokseoul.quietseoul.dto;
 
 import lombok.Getter;
 import lombok.Setter;

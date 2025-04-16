@@ -1,10 +1,10 @@
-package com.hanjeokseoul.quietseoul.suggestion.controller;
+package com.hanjeokseoul.quietseoul.controller;
 
-import com.hanjeokseoul.quietseoul.suggestion.domain.SuggestionEntity;
-import com.hanjeokseoul.quietseoul.suggestion.dto.SuggestionRequest;
-import com.hanjeokseoul.quietseoul.suggestion.dto.SuggestionResponse;
-import com.hanjeokseoul.quietseoul.suggestion.service.SuggestionService;
-import com.hanjeokseoul.quietseoul.user.domain.UserEntity;
+import com.hanjeokseoul.quietseoul.service.SuggestionService;
+import com.hanjeokseoul.quietseoul.domain.SuggestionEntity;
+import com.hanjeokseoul.quietseoul.dto.SuggestionRequest;
+import com.hanjeokseoul.quietseoul.dto.SuggestionResponse;
+import com.hanjeokseoul.quietseoul.domain.UserEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
