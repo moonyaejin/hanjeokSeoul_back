@@ -11,6 +11,7 @@ public class SuggestionResponse {
 
     private String id;
     private String placeName;
+    private String address;
     private String description;
     private double latitude;
     private double longitude;
