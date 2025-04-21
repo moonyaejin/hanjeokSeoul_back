@@ -9,5 +9,5 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     List<Place> findByAreaCd(String areaCd);
     List<Place> findByCategory(String category);
     List<Place> findByAreaCdAndCategory(String areaCd, String category);
-    List<Place> findByAreaCdAndCategoryAndSubCategory(String areaCd, String category, String subCategory);
+    List<Place> findByAreaCdAndCategoryAndSubcategory(String areaCd, String category, String subcategory);
 }

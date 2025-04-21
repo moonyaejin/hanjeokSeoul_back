@@ -32,8 +32,8 @@ public class PlaceService {
                 .collect(Collectors.toList());
     }
 
-    public List<PlaceResponse> getPlacesByAreaAndCategoryAndSubCategory(String areaCd, String category, String subCategory) {
-        return placeRepository.findByAreaCdAndCategoryAndSubCategory(areaCd, category, subCategory)
+    public List<PlaceResponse> getPlacesByAreaAndCategoryAndSubCategory(String areaCd, String category, String subcategory) {
+        return placeRepository.findByAreaCdAndCategoryAndSubcategory(areaCd, category, subcategory)
                 .stream()
                 .map(PlaceResponse::from)
                 .collect(Collectors.toList());

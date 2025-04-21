@@ -20,10 +20,14 @@ public class PlaceReview {
     @ManyToOne
     private Place place;
 
+    @ManyToOne
+    private UserEntity writer;
+
     @Enumerated(EnumType.STRING)
     private CongestionLevel congestionLevel;
 
     private String comment;
+    private String imageUrl;
     private LocalDate visitDate;
     private LocalDateTime createdAt;
 
