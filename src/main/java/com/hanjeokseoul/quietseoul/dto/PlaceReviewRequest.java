@@ -13,4 +13,5 @@ public class PlaceReviewRequest {
     private CongestionLevel congestionLevel;
     private String comment;
     private LocalDate visitDate;
+    private String imageUrl;
 }

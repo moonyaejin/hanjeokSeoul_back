@@ -30,5 +30,4 @@ public class PlaceReview {
     private String imageUrl;
     private LocalDate visitDate;
     private LocalDateTime createdAt;
-
 }

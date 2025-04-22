@@ -26,17 +26,15 @@ public class PlaceReviewService {
     private final PlaceReviewRepository reviewRepository;
 
     @Transactional
-    public void addReview(Long placeId, PlaceReviewRequest request, MultipartFile imageFile) {
+    public void addReview(Long placeId, PlaceReviewRequest request, MultipartFile imageFile, String username) {
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(() -> new IllegalArgumentException("Place not found"));
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) authentication.getPrincipal();
 
-        String imageUrl = null;
-        if (imageFile != null && !imageFile.isEmpty()) {
-            imageUrl = null;
-        }
+        String imageUrl = request.getImageUrl();
+
         PlaceReview review = PlaceReview.builder()
                 .place(place)
                 .congestionLevel(request.getCongestionLevel())

@@ -5,6 +5,8 @@ import com.hanjeokseoul.quietseoul.dto.PlaceReviewResponse;
 import com.hanjeokseoul.quietseoul.service.PlaceReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,11 +22,23 @@ public class PlaceReviewController {
     public ResponseEntity<String> submitReview(
             @PathVariable Long placeId,
             @RequestPart("data") PlaceReviewRequest request,
-            @RequestPart(value="image", required=false) MultipartFile imageFile
+            @RequestPart(value="image", required=false) MultipartFile imageFile,
+            @AuthenticationPrincipal UserDetails user
     ) {
-        placeReviewService.addReview(placeId, request, imageFile);
+        placeReviewService.addReview(placeId, request, imageFile, user.getUsername());
         return ResponseEntity.ok("리뷰가 등록되었습니다.");
     }
+
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<String> submitReviewJsonOnly(
+            @PathVariable Long placeId,
+            @RequestBody PlaceReviewRequest request,
+            @AuthenticationPrincipal UserDetails user
+    ) {
+        placeReviewService.addReview(placeId, request, null, user.getUsername());
+        return ResponseEntity.ok("리뷰가 등록되었습니다.");
+    }
+
 
     @GetMapping
     public ResponseEntity<List<PlaceReviewResponse>> getReviews(@PathVariable Long placeId) {
