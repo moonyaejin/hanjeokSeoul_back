@@ -39,10 +39,17 @@ public class PlaceReviewController {
         return ResponseEntity.ok("리뷰가 등록되었습니다.");
     }
 
-
     @GetMapping
     public ResponseEntity<List<PlaceReviewResponse>> getReviews(@PathVariable Long placeId) {
         return ResponseEntity.ok(placeReviewService.getReviewsByPlace(placeId));
+    }
+
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<PlaceReviewResponse> getReviewDetail(
+            @PathVariable Long placeId,
+            @PathVariable Long reviewId
+    ) {
+        return ResponseEntity.ok(placeReviewService.getReviewDetail(reviewId));
     }
 
     @DeleteMapping("/{reviewId}")

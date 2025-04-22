@@ -63,6 +63,12 @@ public class PlaceReviewService {
                 .collect(Collectors.toList());
     }
 
+    public PlaceReviewResponse getReviewDetail(Long reviewId) {
+        PlaceReview review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
+        return PlaceReviewResponse.from(review);
+    }
+
     @Transactional
     public void deleteReview(Long placeId, Long reviewId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
