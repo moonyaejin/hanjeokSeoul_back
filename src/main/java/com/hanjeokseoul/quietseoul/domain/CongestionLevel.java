@@ -1,5 +1,7 @@
 package com.hanjeokseoul.quietseoul.domain;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum CongestionLevel {
     CONGESTED(1), NORMAL(3), QUIET(5);
 

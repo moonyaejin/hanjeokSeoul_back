@@ -41,16 +41,22 @@ public class UserController {
         ));
     }
 
-    @Operation(description = "username과 password를 통해 JWT 토큰을 발급받습니다.")
     @PostMapping("/login")
+    @Operation(description = "username과 password를 통해 JWT 토큰을 발급받습니다.")
     public ResponseEntity<?> login(@RequestBody UserLoginRequest request) {
         // AuthenticationManager로 인증 처리
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
-        // 인증 성공 시 JWT 발급
-        String token = jwtTokenProvider.createToken(request.getUsername());
+        // 인증된 사용자 정보 가져오기
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+
+        // 토큰 생성 시 role 추가
+        String token = jwtTokenProvider.createToken(
+                user.getUsername(),
+                user.getRole()
+        );
         return ResponseEntity.ok(Map.of("token", token));
     }
 

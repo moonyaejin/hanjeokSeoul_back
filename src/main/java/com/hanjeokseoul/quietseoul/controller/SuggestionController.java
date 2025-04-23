@@ -64,18 +64,17 @@ public class SuggestionController {
         return ResponseEntity.ok(Map.of("message", "제보가 삭제되었습니다."));
     }
 
-    @PatchMapping("/admin/suggestions/{id}/approve")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PatchMapping("/admin/{id}/approve")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> approveSuggestion(@PathVariable String id) {
         suggestionService.approve(id);
         return ResponseEntity.ok(Map.of("message", "제보가 승인되었습니다."));
     }
 
-    @DeleteMapping("/admin/suggestions/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("/admin/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteSuggestionByAdmin(@PathVariable String id) {
         suggestionService.adminDelete(id);
         return ResponseEntity.ok(Map.of("message", "관리자에 의해 제보가 삭제되었습니다."));
     }
-
 }

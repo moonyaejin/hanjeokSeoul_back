@@ -38,7 +38,7 @@ public class SuggestionService {
         suggestionRepository.delete(suggestion);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void approve(String id) {
         SuggestionEntity suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("제보를 찾을 수 없습니다."));
@@ -47,7 +47,7 @@ public class SuggestionService {
         suggestionRepository.save(suggestion);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void adminDelete(String id) {
         SuggestionEntity suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("제보를 찾을 수 없습니다."));

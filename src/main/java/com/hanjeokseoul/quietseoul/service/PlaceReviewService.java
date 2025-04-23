@@ -7,6 +7,8 @@ import com.hanjeokseoul.quietseoul.dto.PlaceReviewRequest;
 import com.hanjeokseoul.quietseoul.dto.PlaceReviewResponse;
 import com.hanjeokseoul.quietseoul.repository.PlaceRepository;
 import com.hanjeokseoul.quietseoul.repository.PlaceReviewRepository;
+import com.hanjeokseoul.quietseoul.domain.CongestionLevel;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -24,36 +27,40 @@ public class PlaceReviewService {
 
     private final PlaceRepository placeRepository;
     private final PlaceReviewRepository reviewRepository;
+    private final PlaceReviewRepository placeReviewRepository;
 
     @Transactional
-    public void addReview(Long placeId, PlaceReviewRequest request, MultipartFile imageFile, String username) {
+    public PlaceReview addReview(Long placeId, PlaceReviewRequest request, MultipartFile imageFile, String username) {
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(() -> new IllegalArgumentException("Place not found"));
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) authentication.getPrincipal();
+        LocalDate date = request.getVisitDate();
 
         String imageUrl = request.getImageUrl();
 
         PlaceReview review = PlaceReview.builder()
                 .place(place)
-                .congestionLevel(request.getCongestionLevel())
+                .congestionLevel(request.toCongestionLevel())
                 .comment(request.getComment())
                 .visitDate(request.getVisitDate())
                 .createdAt(LocalDateTime.now())
-                .imageUrl(imageUrl)
+                .imageUrl(request.getImageUrl())
                 .writer(user)
                 .build();
 
-        reviewRepository.save(review);
+        PlaceReview saved = reviewRepository.save(review);
 
+        // 평균 평점 갱신
         List<PlaceReview> reviews = reviewRepository.findByPlaceId(place.getId());
         double avg = reviews.stream()
                 .mapToInt(r -> r.getCongestionLevel().getScore())
                 .average()
                 .orElse(0.0);
-
         place.setAvgRating(avg);
+
+        return saved;
     }
 
     public List<PlaceReviewResponse> getReviewsByPlace(Long placeId) {
@@ -86,5 +93,11 @@ public class PlaceReviewService {
         }
 
         reviewRepository.delete(review);
+    }
+
+    public void adminDeleteReview(Long placeId, Long reviewId) {
+        PlaceReview review = placeReviewRepository.findByIdAndPlaceId(reviewId, placeId)
+                .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
+        placeReviewRepository.delete(review);
     }
 }

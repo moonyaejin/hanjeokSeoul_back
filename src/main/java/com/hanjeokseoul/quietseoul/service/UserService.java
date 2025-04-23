@@ -4,6 +4,8 @@ import com.hanjeokseoul.quietseoul.domain.UserEntity;
 import com.hanjeokseoul.quietseoul.dto.UserRegisterRequest;
 import com.hanjeokseoul.quietseoul.dto.UserUpdateRequest;
 import com.hanjeokseoul.quietseoul.repository.UserRepository;
+import com.hanjeokseoul.quietseoul.security.JwtTokenProvider;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider; // ✅ 추가!
 
     public UserEntity register(UserRegisterRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -27,7 +30,7 @@ public class UserService {
         user.setPhone(request.getPhone());
         user.setBirthdate(request.getBirthdate());
         user.setGender(request.getGender());
-        user.setRole("USER"); // 기본값 고정
+        user.setRole("USER");
 
         return userRepository.save(user);
     }
@@ -52,6 +55,6 @@ public class UserService {
             user.setGender(request.getGender());
         }
 
-        return userRepository.save(user);
+        return userRepository.save(user); // ✅ 여기에서 토큰 생성은 불필요하다면 생략 가능
     }
 }

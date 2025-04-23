@@ -2,41 +2,38 @@ package com.hanjeokseoul.quietseoul.controller;
 
 import com.hanjeokseoul.quietseoul.dto.PlaceReviewRequest;
 import com.hanjeokseoul.quietseoul.dto.PlaceReviewResponse;
+import com.hanjeokseoul.quietseoul.domain.PlaceReview;
 import com.hanjeokseoul.quietseoul.service.PlaceReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/places/{placeId}/reviews")
 public class PlaceReviewController {
+
     private final PlaceReviewService placeReviewService;
 
-    @PostMapping
-    public ResponseEntity<String> submitReview(
-            @PathVariable Long placeId,
-            @RequestPart("data") PlaceReviewRequest request,
-            @RequestPart(value="image", required=false) MultipartFile imageFile,
-            @AuthenticationPrincipal UserDetails user
-    ) {
-        placeReviewService.addReview(placeId, request, imageFile, user.getUsername());
-        return ResponseEntity.ok("리뷰가 등록되었습니다.");
-    }
-
-    @PostMapping(consumes = "application/json")
-    public ResponseEntity<String> submitReviewJsonOnly(
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> submitReview(
             @PathVariable Long placeId,
             @RequestBody PlaceReviewRequest request,
             @AuthenticationPrincipal UserDetails user
     ) {
-        placeReviewService.addReview(placeId, request, null, user.getUsername());
-        return ResponseEntity.ok("리뷰가 등록되었습니다.");
+        PlaceReview review = placeReviewService.addReview(placeId, request, null, user.getUsername());
+        return ResponseEntity.ok(Map.of(
+                "message", "리뷰가 등록되었습니다.",
+                "reviewId", review.getId()
+        ));
     }
 
     @GetMapping
@@ -59,5 +56,15 @@ public class PlaceReviewController {
     ) {
         placeReviewService.deleteReview(placeId, reviewId);
         return ResponseEntity.ok("리뷰가 삭제되었습니다.");
+    }
+
+    @DeleteMapping("/admin/{reviewId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteReviewByAdmin(
+            @PathVariable Long placeId,
+            @PathVariable Long reviewId
+    ) {
+        placeReviewService.adminDeleteReview(placeId, reviewId);
+        return ResponseEntity.ok(Map.of("message", "관리자에 의해 리뷰가 삭제되었습니다."));
     }
 }
