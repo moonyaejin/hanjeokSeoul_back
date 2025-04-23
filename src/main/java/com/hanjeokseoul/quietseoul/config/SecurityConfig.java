@@ -35,9 +35,10 @@ public class SecurityConfig {
                                 "/api/users/register",
                                 "/api/users/logout",
                                 "/api/users/me",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()

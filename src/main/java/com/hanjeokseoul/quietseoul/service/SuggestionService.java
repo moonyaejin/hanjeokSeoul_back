@@ -4,9 +4,11 @@ import com.hanjeokseoul.quietseoul.dto.SuggestionRequest;
 import com.hanjeokseoul.quietseoul.domain.SuggestionEntity;
 import com.hanjeokseoul.quietseoul.domain.UserEntity;
 import com.hanjeokseoul.quietseoul.repository.SuggestionRepository;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,5 +52,9 @@ public class SuggestionService {
         SuggestionEntity suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("제보를 찾을 수 없습니다."));
         suggestionRepository.delete(suggestion);
+    }
+
+    public List<SuggestionEntity> findApproved() {
+        return suggestionRepository.findByApprovedTrue();
     }
 }
