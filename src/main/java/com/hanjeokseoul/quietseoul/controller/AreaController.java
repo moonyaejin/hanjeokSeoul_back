@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,4 +50,20 @@ public class AreaController {
     public List<AreaIndustryResponse> getIndustry(@PathVariable String areaCd) {
         return industryService.getByAreaCd(areaCd);
     }
+
+    @GetMapping("/industry/{areaCd}/{rsbLrgCtgr}")
+    public List<AreaIndustryResponse> getIndustryByCategory(@PathVariable String areaCd, @PathVariable String rsbLrgCtgr) {
+        return industryService.getByAreaCdAndCategory(areaCd, rsbLrgCtgr);
+    }
+
+    @GetMapping("/industry/{areaCd}/score")
+    public Map<String, Integer> getIndustryScores(@PathVariable String areaCd) {
+        return industryService.getScoreMap(areaCd);
+    }
+
+    @GetMapping("/industry/{areaCd}/score/{category}")
+    public int getIndustryScoreByCategory(@PathVariable String areaCd, @PathVariable String category) {
+        return industryService.getScoreByCategory(areaCd, category);
+    }
+
 }

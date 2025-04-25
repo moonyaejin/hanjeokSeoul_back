@@ -1,6 +1,5 @@
 package com.hanjeokseoul.quietseoul.service;
 
-import com.hanjeokseoul.quietseoul.domain.AreaLive;
 import com.hanjeokseoul.quietseoul.dto.AreaLiveResponse;
 import com.hanjeokseoul.quietseoul.repository.AreaLiveRepository;
 import lombok.RequiredArgsConstructor;

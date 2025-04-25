@@ -1,6 +1,5 @@
 package com.hanjeokseoul.quietseoul.service;
 
-import com.hanjeokseoul.quietseoul.domain.AreaFcst;
 import com.hanjeokseoul.quietseoul.dto.AreaFcstResponse;
 import com.hanjeokseoul.quietseoul.repository.AreaFcstRepository;
 import lombok.RequiredArgsConstructor;
