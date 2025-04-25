@@ -36,9 +36,19 @@ public class AreaController {
         return ResponseEntity.ok(areaService.getAreasByDistrictId(districtId));
     }
 
+    @GetMapping("/live")
+    public List<AreaLiveResponse> getAllLive() {
+        return liveService.getAll();
+    }
+
     @GetMapping("/live/{areaCd}")
     public List<AreaLiveResponse> getLive(@PathVariable String areaCd) {
         return liveService.getByAreaCd(areaCd);
+    }
+
+    @GetMapping("/live/quiet")
+    public List<AreaLiveResponse> getQuietLive() {
+        return liveService.getOnlyQuiet();
     }
 
     @GetMapping("/fcst/{areaCd}")

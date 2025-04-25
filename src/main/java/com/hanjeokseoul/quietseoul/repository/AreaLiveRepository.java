@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface AreaLiveRepository extends JpaRepository<AreaLive, Long> {
     List<AreaLive> findByAreaCd(String areaCd);
+    List<AreaLive> findByAreaCongestLvl(String areaCongestLvl);
 }

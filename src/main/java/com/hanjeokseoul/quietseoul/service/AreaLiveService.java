@@ -13,8 +13,20 @@ import java.util.stream.Collectors;
 public class AreaLiveService {
     private final AreaLiveRepository repository;
 
+    public List<AreaLiveResponse> getAll() {
+        return repository.findAll().stream()
+                .map(AreaLiveResponse::from)
+                .collect(Collectors.toList());
+    }
+
     public List<AreaLiveResponse> getByAreaCd(String areaCd) {
         return repository.findByAreaCd(areaCd).stream()
+                .map(AreaLiveResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    public List<AreaLiveResponse> getOnlyQuiet() {
+        return repository.findByAreaCongestLvl("여유").stream()
                 .map(AreaLiveResponse::from)
                 .collect(Collectors.toList());
     }
