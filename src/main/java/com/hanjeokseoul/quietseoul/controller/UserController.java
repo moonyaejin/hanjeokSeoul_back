@@ -97,4 +97,11 @@ public class UserController {
                 updatedUser.getGender()
         ));
     }
+
+    @GetMapping("/me/name")
+    public ResponseEntity<Map<String, String>> getMyName(Authentication authentication) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        return ResponseEntity.ok(Map.of("name", user.getName()));
+    }
+
 }
