@@ -7,19 +7,18 @@ import com.hanjeokseoul.quietseoul.dto.PlaceReviewRequest;
 import com.hanjeokseoul.quietseoul.dto.PlaceReviewResponse;
 import com.hanjeokseoul.quietseoul.repository.PlaceRepository;
 import com.hanjeokseoul.quietseoul.repository.PlaceReviewRepository;
-import com.hanjeokseoul.quietseoul.domain.CongestionLevel;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.time.LocalDate;
+import com.hanjeokseoul.quietseoul.domain.PlaceReviewImage;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,15 +29,12 @@ public class PlaceReviewService {
     private final PlaceReviewRepository placeReviewRepository;
 
     @Transactional
-    public PlaceReview addReview(Long placeId, PlaceReviewRequest request, MultipartFile imageFile, String username) {
+    public PlaceReview addReview(Long placeId, PlaceReviewRequest request, String username) {
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(() -> new IllegalArgumentException("Place not found"));
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) authentication.getPrincipal();
-        LocalDate date = request.getVisitDate();
-
-        String imageUrl = request.getImageUrl();
 
         PlaceReview review = PlaceReview.builder()
                 .place(place)
@@ -46,9 +42,19 @@ public class PlaceReviewService {
                 .comment(request.getComment())
                 .visitDate(request.getVisitDate())
                 .createdAt(LocalDateTime.now())
-                .imageUrl(request.getImageUrl())
                 .writer(user)
                 .build();
+
+        if (request.getImageUrlList() != null && !request.getImageUrlList().isEmpty()) {
+            List<PlaceReviewImage> imageEntities = request.getImageUrlList().stream()
+                    .map(url -> PlaceReviewImage.builder()
+                            .imageUrl(url)
+                            .review(review) // 연관관계 설정
+                            .build())
+                    .collect(Collectors.toList());
+
+            review.setImages(imageEntities); // 연관된 이미지들 세팅
+        }
 
         PlaceReview saved = reviewRepository.save(review);
 

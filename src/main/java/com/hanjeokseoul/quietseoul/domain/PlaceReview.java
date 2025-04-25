@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Getter
@@ -27,7 +29,10 @@ public class PlaceReview {
     private CongestionLevel congestionLevel;
 
     private String comment;
-    private String imageUrl;
+
     private LocalDate visitDate;
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PlaceReviewImage> images = new ArrayList<>();
 }

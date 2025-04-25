@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class PlaceReviewRequest {
     private String congestionLevel;
     private String comment;
     private LocalDate visitDate;
-    private String imageUrl;
+    private List<String> imageUrlList;
 
     public CongestionLevel toCongestionLevel() {
         if (congestionLevel == null) {

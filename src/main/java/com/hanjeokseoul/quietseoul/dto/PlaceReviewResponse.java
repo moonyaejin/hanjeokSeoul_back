@@ -2,10 +2,13 @@ package com.hanjeokseoul.quietseoul.dto;
 
 import com.hanjeokseoul.quietseoul.domain.CongestionLevel;
 import com.hanjeokseoul.quietseoul.domain.PlaceReview;
+import com.hanjeokseoul.quietseoul.domain.PlaceReviewImage;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -20,16 +23,21 @@ public class PlaceReviewResponse {
     private CongestionLevel congestionLevel;
     private String writerUsername;
     private String imageUrl;
+    private List<String> imageUrls;
 
     public static PlaceReviewResponse from(PlaceReview placeReview) {
+        List<String> imageUrls = placeReview.getImages().stream()
+                .map(PlaceReviewImage::getImageUrl)
+                .collect(Collectors.toList());
+
         return PlaceReviewResponse.builder()
                 .id(placeReview.getId())
                 .comment(placeReview.getComment())
                 .visitDate(placeReview.getVisitDate())
                 .createdAt(placeReview.getCreatedAt())
                 .congestionLevel(placeReview.getCongestionLevel())
-                .imageUrl(placeReview.getImageUrl())
                 .writerUsername(placeReview.getWriter().getUsername())
+                .imageUrls(imageUrls)
                 .build();
     }
 }

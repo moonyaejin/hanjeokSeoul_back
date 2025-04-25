@@ -32,6 +32,7 @@ public class Place {
     private double avgRating; //리뷰 평균 한적도
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<PlaceReview> reviews = new ArrayList<>();
 
     @ManyToOne
