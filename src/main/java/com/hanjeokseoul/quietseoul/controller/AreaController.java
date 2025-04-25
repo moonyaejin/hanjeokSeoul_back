@@ -1,13 +1,11 @@
 package com.hanjeokseoul.quietseoul.controller;
 
 import com.hanjeokseoul.quietseoul.domain.Area;
+import com.hanjeokseoul.quietseoul.domain.District;
 import com.hanjeokseoul.quietseoul.dto.AreaFcstResponse;
 import com.hanjeokseoul.quietseoul.dto.AreaIndustryResponse;
 import com.hanjeokseoul.quietseoul.dto.AreaLiveResponse;
-import com.hanjeokseoul.quietseoul.service.AreaFcstService;
-import com.hanjeokseoul.quietseoul.service.AreaIndustryService;
-import com.hanjeokseoul.quietseoul.service.AreaLiveService;
-import com.hanjeokseoul.quietseoul.service.AreaService;
+import com.hanjeokseoul.quietseoul.service.*;
 import com.hanjeokseoul.quietseoul.dto.AreaResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -25,10 +23,16 @@ public class AreaController {
     private final AreaLiveService liveService;
     private final AreaFcstService fcstService;
     private final AreaIndustryService industryService;
+    private final DistrictService districtService;
 
     @GetMapping
     public List<AreaResponse> getAllAreas() {
         return areaService.getAllAreas();
+    }
+
+    @GetMapping("/district")
+    public List<District> getAllDistricts() {
+        return districtService.getAllDistricts();
     }
 
     @GetMapping("/district/{districtId}")
