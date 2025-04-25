@@ -28,7 +28,7 @@ public class PlaceResponse {
                 .name(place.getName())
                 .category(place.getCategory())
                 .subcategory(place.getSubcategory())
-                .areaCd(place.getAreaCd())
+                .areaCd(place.getArea() != null ? place.getArea().getAreaCd() : null)
                 .address(place.getAddress())
                 .roadAddress(place.getRoadAddress())
                 .detailAddress(place.getDetailAddress())

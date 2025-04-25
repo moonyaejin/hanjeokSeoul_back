@@ -21,7 +21,6 @@ public class Place {
     private String category;
     private String subcategory;
 
-    private String areaCd; //관리 구역 코드
     private String address; //~동
     private String roadAddress;
     private String detailAddress;
@@ -34,4 +33,9 @@ public class Place {
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<PlaceReview> reviews = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "area_cd")
+    private Area area;
+
 }

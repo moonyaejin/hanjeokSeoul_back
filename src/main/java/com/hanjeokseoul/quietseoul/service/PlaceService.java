@@ -27,13 +27,14 @@ public class PlaceService {
     }
 
     public List<PlaceResponse> getPlacesByAreaAndCategory(String areaCd, String category) {
-        return placeRepository.findByAreaCdAndCategory(areaCd, category).stream()
+        return placeRepository.findByArea_AreaCdAndCategory(areaCd, category)
+                .stream()
                 .map(PlaceResponse::from)
                 .collect(Collectors.toList());
     }
 
     public List<PlaceResponse> getPlacesByAreaAndCategoryAndSubCategory(String areaCd, String category, String subcategory) {
-        return placeRepository.findByAreaCdAndCategoryAndSubcategory(areaCd, category, subcategory)
+        return placeRepository.findByArea_AreaCdAndCategoryAndSubcategory(areaCd, category, subcategory)
                 .stream()
                 .map(PlaceResponse::from)
                 .collect(Collectors.toList());
