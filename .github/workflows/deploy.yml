@@ -1,9 +1,10 @@
 name: Deploy to EC2 using Docker
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
