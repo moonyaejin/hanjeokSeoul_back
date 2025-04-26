@@ -2,6 +2,7 @@ package com.hanjeokseoul.quietseoul.controller;
 
 import com.hanjeokseoul.quietseoul.dto.PlaceResponse;
 import com.hanjeokseoul.quietseoul.service.PlaceService;
+import com.hanjeokseoul.quietseoul.dto.NearbyPlaceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +42,13 @@ public class PlaceController {
         return ResponseEntity.ok(
                 placeService.getPlacesByAreaAndCategoryAndSubCategory(areaCd, category, subcategory)
         );
+    }
+
+    @GetMapping("/nearby")
+    public ResponseEntity<NearbyPlaceResponse> getNearbyPlaces(
+            @RequestParam double lat,
+            @RequestParam double lng
+    ) {
+        return ResponseEntity.ok(placeService.findNearbyPlaces(lat, lng));
     }
 }

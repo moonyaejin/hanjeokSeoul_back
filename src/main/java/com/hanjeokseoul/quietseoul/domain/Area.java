@@ -26,6 +26,12 @@ public class Area {
     @Column(columnDefinition = "TEXT")
     private String imageUrl;
 
+    @Column(nullable = false)
+    private double lat;
+
+    @Column(nullable = false)
+    private double lng;
+
     public Area(String areaCd, String areaNm) {
         this.areaCd = areaCd;
         this.areaNm = areaNm;
