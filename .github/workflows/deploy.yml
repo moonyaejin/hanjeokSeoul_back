@@ -1,4 +1,4 @@
-name: Deploy to AWS ECS
+name: Deploy to EC2 using Docker & ECR
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    name: Build and Deploy to ECR/ECS
+    name: Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -19,14 +19,27 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Login to Amazon ECR
+      - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker image
+      - name: Build and Push Docker image to ECR
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         run: |
-          docker build -t quiet-seoul .
-          docker tag quiet-seoul:latest 781312897283.dkr.ecr.ap-northeast-2.amazonaws.com/quiet-seoul:latest
+          IMAGE_TAG=latest
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Push Docker image to ECR
-        run: |
-          docker push 781312897283.dkr.ecr.ap-northeast-2.amazonaws.com/quiet-seoul:latest
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY }}
+            docker stop quietseoul || true
+            docker rm quietseoul || true
+            docker pull ${{ secrets.ECR_REPOSITORY }}:latest
+            docker run -d -p 8080:8080 --name quietseoul ${{ secrets.ECR_REPOSITORY }}:latest
