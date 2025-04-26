@@ -62,6 +62,7 @@ public class PlaceService {
         List<NearbyPlaceResponse.PlaceDto> sortedPlaces = places.stream()
                 .sorted(Comparator.comparingDouble(p -> distance(userLat, userLng, p.getLat(), p.getLng())))
                 .map(this::toNearbyDto)
+                .limit(5)
                 .collect(Collectors.toList());
 
         return NearbyPlaceResponse.builder()
