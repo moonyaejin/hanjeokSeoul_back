@@ -20,6 +20,8 @@ public class Area {
     @Column(name = "area_nm")
     private String areaNm;
 
+    private String district;
+
     private Integer districtId;
     private Integer categoryId;
 
