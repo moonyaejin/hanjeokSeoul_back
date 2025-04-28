@@ -21,15 +21,14 @@ public class Place {
     private String category;
     private String subcategory;
 
-    private String address; //~동
-    private String roadAddress;
-    private String detailAddress;
+    private String address;
 
     private double lat;
     private double lng;
 
     private String description;
     private double avgRating; //리뷰 평균 한적도
+    private String imageUrl;
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     @Builder.Default
