@@ -2,7 +2,6 @@ package com.hanjeokseoul.quietseoul.repository;
 
 import com.hanjeokseoul.quietseoul.domain.PlaceReview;
 import com.hanjeokseoul.quietseoul.domain.Place;
-import com.hanjeokseoul.quietseoul.repository.PlaceRecommendationProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
