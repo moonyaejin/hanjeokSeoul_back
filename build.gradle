@@ -7,6 +7,10 @@ plugins {
 group = 'com.hanjeokseoul'
 version = '0.0.1-SNAPSHOT'
 
+tasks.withType(JavaCompile).configureEach {
+	options.release = 17
+}
+
 bootJar {
 	archiveFileName = 'app.jar'
 }
