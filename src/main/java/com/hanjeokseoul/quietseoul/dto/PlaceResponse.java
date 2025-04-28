@@ -38,4 +38,5 @@ public class PlaceResponse {
                 .avgRating(place.getAvgRating())
                 .build();
     }
+
 }
