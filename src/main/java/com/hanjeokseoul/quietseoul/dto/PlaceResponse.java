@@ -36,4 +36,5 @@ public class PlaceResponse {
                 .imageUrl(place.getImageUrl())
                 .build();
     }
+
 }

@@ -5,6 +5,8 @@ import com.hanjeokseoul.quietseoul.domain.SuggestionEntity;
 import com.hanjeokseoul.quietseoul.dto.SuggestionRequest;
 import com.hanjeokseoul.quietseoul.dto.SuggestionResponse;
 import com.hanjeokseoul.quietseoul.domain.UserEntity;
+import com.hanjeokseoul.quietseoul.dto.SuggestionFilterRequest;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -76,5 +78,13 @@ public class SuggestionController {
     public ResponseEntity<?> deleteSuggestionByAdmin(@PathVariable String id) {
         suggestionService.adminDelete(id);
         return ResponseEntity.ok(Map.of("message", "관리자에 의해 제보가 삭제되었습니다."));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<SuggestionResponse>> filterSuggestions(
+            @ModelAttribute SuggestionFilterRequest request
+    ) {
+        List<SuggestionResponse> filteredSuggestions = suggestionService.filterSuggestions(request);
+        return ResponseEntity.ok(filteredSuggestions);
     }
 }

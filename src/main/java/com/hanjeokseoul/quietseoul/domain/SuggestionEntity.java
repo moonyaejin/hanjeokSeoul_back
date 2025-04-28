@@ -2,6 +2,7 @@ package com.hanjeokseoul.quietseoul.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,4 +26,15 @@ public class SuggestionEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
+
+    private String category;
+    private String district;
+    private double quietScore;
+    private int reviewCount;
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now(); // 저장될 때 자동으로 현재 시간 입력
+    }
 }
