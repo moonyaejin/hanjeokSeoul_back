@@ -1,12 +1,12 @@
-# JAR 빌드용 Gradle 이미지
-FROM gradle:8.1.1-jdk17 AS builder
-WORKDIR /app
-COPY . .
-RUN gradle clean build -x test
+# OpenJDK 17 기반 이미지 사용
+FROM openjdk:17-jdk-alpine
 
-# 실행용 경량 이미지
-FROM eclipse-temurin:17-jdk-jammy
-WORKDIR /app
-COPY --from=builder /app/build/libs/*.jar app.jar
+# JAR 파일을 이미지에 복사
+ARG JAR_FILE=build/libs/quietseoul-0.0.1-SNAPSHOT.jar
+COPY ${JAR_FILE} app.jar
+
+# 포트 오픈
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# 실행 명령어
+ENTRYPOINT ["java", "-jar", "/app.jar"]
