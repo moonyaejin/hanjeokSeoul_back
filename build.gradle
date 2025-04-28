@@ -7,8 +7,12 @@ plugins {
 group = 'com.hanjeokseoul'
 version = '0.0.1-SNAPSHOT'
 
-tasks.withType(JavaCompile).configureEach {
-	options.release = 17
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+		vendor = JvmVendorSpec.ADOPTIUM
+		implementation = JvmImplementation.J9
+	}
 }
 
 bootJar {
