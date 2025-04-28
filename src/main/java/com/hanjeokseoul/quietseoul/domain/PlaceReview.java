@@ -34,5 +34,6 @@ public class PlaceReview {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<PlaceReviewImage> images = new ArrayList<>();
 }
