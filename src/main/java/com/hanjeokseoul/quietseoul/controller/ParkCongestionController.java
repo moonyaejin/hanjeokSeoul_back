@@ -15,14 +15,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/parks")
+@RequestMapping("/congestion")
 @RequiredArgsConstructor
 public class ParkCongestionController {
 
     private final ParkCongestionService parkCongestionService;
 
     // 현재 혼잡도 리스트 조회
-    @GetMapping("/congestion/current")
+    @GetMapping("/current")
     public List<CurrentCongestionResponse> getCurrentCongestions() {
         return parkCongestionService.getCurrentCongestions().stream()
                 .map(c -> new CurrentCongestionResponse(c.getParkName(), c.getCongestionLevel()))
@@ -30,7 +30,7 @@ public class ParkCongestionController {
     }
 
     // 공원별 주간 예측 조회
-    @GetMapping("/congestion/weekly/{parkName}")
+    @GetMapping("/weekly/{parkName}")
     public List<DailyForecastResponse> getWeeklyForecast(@PathVariable String parkName) {
         Map<LocalDate, List<ParkCongestion>> forecastMap = parkCongestionService.getWeeklyForecastByPark(parkName);
 
