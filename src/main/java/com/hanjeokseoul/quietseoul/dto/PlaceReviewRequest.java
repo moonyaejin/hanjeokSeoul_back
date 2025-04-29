@@ -1,26 +1,28 @@
 package com.hanjeokseoul.quietseoul.dto;
 
 import com.hanjeokseoul.quietseoul.domain.CongestionLevel;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class PlaceReviewRequest {
-    private String congestionLevel;
-    private String comment;
-    private LocalDate visitDate;
-    private List<String> imageUrlList;
 
-    public CongestionLevel toCongestionLevel() {
-        if (congestionLevel == null) {
-            throw new IllegalArgumentException("혼잡도(congestionLevel)는 필수입니다.");
-        }
-        return CongestionLevel.valueOf(congestionLevel.toUpperCase());
-    }
+    @Schema(description = "혼잡도", example = "QUIET")
+    private CongestionLevel congestionLevel;
+
+    @Schema(description = "코멘트", example = "정말 한적해요!")
+    private String comment;
+
+    @Schema(description = "방문 날짜", example = "2025-04-28")
+    private LocalDate visitDate;
+
+    @Schema(description = "업로드할 이미지 파일 리스트", format = "binary")
+    private List<MultipartFile> imageUrlList;
 }
+
