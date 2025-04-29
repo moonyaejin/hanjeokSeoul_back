@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class AreaLiveResponse {
     private String areaCd;
+    private String areaNm;
     private String ppltnTime;
     private String areaCongestLvl;
     private String areaCongestMsg;
