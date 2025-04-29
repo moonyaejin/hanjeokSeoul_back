@@ -145,6 +145,7 @@ public class PlaceService {
                 .lat(place.getLat())
                 .lng(place.getLng())
                 .avgRating(place.getAvgRating())
+                .areaCd(place.getArea().getAreaCd())
                 .build();
     }
 }

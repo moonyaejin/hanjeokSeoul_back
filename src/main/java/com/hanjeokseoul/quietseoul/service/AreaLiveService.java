@@ -45,6 +45,7 @@ public List<AreaLiveResponse> getOnlyQuiet() {
                 return AreaLiveResponse.builder()
                         .areaCd(live.getAreaCd())
                         .areaNm(area != null ? area.getAreaNm() : null)
+                        .imageUrl(area != null ? area.getImageUrl() : null)
                         .areaCongestLvl(live.getAreaCongestLvl())
                         .areaCongestMsg(live.getAreaCongestMsg())
                         .areaPpltnMin(live.getAreaPpltnMin())

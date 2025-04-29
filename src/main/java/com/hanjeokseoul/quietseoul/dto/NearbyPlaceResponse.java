@@ -31,5 +31,7 @@ public class NearbyPlaceResponse {
         private double lat;
         private double lng;
         private double avgRating;
+
+        private String areaCd;
     }
 }
