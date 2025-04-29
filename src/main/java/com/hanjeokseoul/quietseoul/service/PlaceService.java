@@ -11,6 +11,9 @@ import com.hanjeokseoul.quietseoul.repository.AreaRepository;
 import com.hanjeokseoul.quietseoul.repository.PlaceRepository;
 import com.hanjeokseoul.quietseoul.repository.PlaceReviewRepository;
 import com.hanjeokseoul.quietseoul.repository.PlaceRecommendationProjection;
+import com.hanjeokseoul.quietseoul.util.DistanceUtils;
+import com.hanjeokseoul.quietseoul.util.FilterSortUtils;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +57,7 @@ public class PlaceService {
         List<Area> allAreas = areaRepository.findAll();
 
         Area closestArea = allAreas.stream()
-                .min(Comparator.comparingDouble(area -> distance(userLat, userLng, area.getLat(), area.getLng())))
+                .min(Comparator.comparingDouble(area -> DistanceUtils.calculateDistance(userLat, userLng, area.getLat(), area.getLng())))
                 .orElseThrow(() -> new IllegalArgumentException("No areas found"));
 
         String baseAreaName = closestArea.getAreaNm();
@@ -66,7 +69,7 @@ public class PlaceService {
         List<Place> places = placeRepository.findByArea_AreaCdAndCategory(areaCd, randomCategory);
 
         List<NearbyPlaceResponse.PlaceDto> sortedPlaces = places.stream()
-                .sorted(Comparator.comparingDouble(p -> distance(userLat, userLng, p.getLat(), p.getLng())))
+                .sorted(Comparator.comparingDouble(p -> DistanceUtils.calculateDistance(userLat, userLng, p.getLat(), p.getLng())))
                 .map(this::toNearbyDto)
                 .limit(5)
                 .collect(Collectors.toList());
@@ -78,7 +81,7 @@ public class PlaceService {
                 .build();
     }
 
-    public List<PlaceReviewRecommendationResponse> recommendPlacesByReviewsOptimized() {
+    private List<PlaceReviewRecommendationResponse> recommendPlacesByReviewsOptimized() {
         List<PlaceRecommendationProjection> recommendedPlaces = placeReviewRepository.findRecommendedPlaces();
 
         return recommendedPlaces.stream()
@@ -92,6 +95,8 @@ public class PlaceService {
                             .reviewCount(rp.getReviewCount().intValue())
                             .category(place.getCategory())
                             .district(place.getArea() != null ? place.getArea().getDistrict() : null)
+                            .lat(place.getLat())
+                            .lng(place.getLng())
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -100,55 +105,36 @@ public class PlaceService {
     public List<PlaceReviewRecommendationResponse> filterForecastPlaces(SuggestionFilterRequest request) {
         List<PlaceReviewRecommendationResponse> places = recommendPlacesByReviewsOptimized();
 
-        // category 필터링
-        if (request.getCategory() != null && !request.getCategory().equalsIgnoreCase("ALL")) {
-            places = places.stream()
-                    .filter(p -> p.getCategory() != null && p.getCategory().equalsIgnoreCase(request.getCategory()))
-                    .collect(Collectors.toList());
-        }
+        places = FilterSortUtils.applyCategoryFilter(places, request.getCategory(), PlaceReviewRecommendationResponse::getCategory);
+        places = FilterSortUtils.applyDistrictFilter(places, request.getDistrict(), PlaceReviewRecommendationResponse::getDistrict);
 
-        // district 필터링
-        if (request.getDistrict() != null && !request.getDistrict().equalsIgnoreCase("ALL")) {
-            places = places.stream()
-                    .filter(p -> p.getDistrict() != null && p.getDistrict().equalsIgnoreCase(request.getDistrict()))
-                    .collect(Collectors.toList());
-        }
-
-        // 정렬
         if (request.getSort() != null) {
             switch (request.getSort()) {
                 case "quietness" -> {
-                    // QUIET 고정이라 정렬 의미 없음
+                    places = places.stream()
+                            .sorted(Comparator.comparingInt(p -> p.getAverageCongestionLevel().getScore()))
+                            .collect(Collectors.toList());
                 }
                 case "review" -> {
-                    places = places.stream()
-                            .sorted((a, b) -> Integer.compare(b.getReviewCount(), a.getReviewCount()))
-                            .collect(Collectors.toList());
+                    places = FilterSortUtils.applyReviewSort(places, PlaceReviewRecommendationResponse::getReviewCount);
                 }
-                case "popularity" -> {
-                    places = places.stream()
-                            .sorted(Comparator.comparing(PlaceReviewRecommendationResponse::getPlaceId))
-                            .collect(Collectors.toList());
+                case "distance" -> {
+                    if (request.getLat() != null && request.getLng() != null) {
+                        double lat = request.getLat();
+                        double lng = request.getLng();
+                        places = FilterSortUtils.applyDistanceSort(
+                                places,
+                                lat,
+                                lng,
+                                PlaceReviewRecommendationResponse::getLat,
+                                PlaceReviewRecommendationResponse::getLng
+                        );
+                    }
                 }
             }
         }
 
         return places;
-    }
-
-    private double distance(double lat1, double lng1, double lat2, double lng2) {
-        final int EARTH_RADIUS_KM = 6371;
-
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lng2 - lng1);
-
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return EARTH_RADIUS_KM * c;
     }
 
     private NearbyPlaceResponse.PlaceDto toNearbyDto(Place place) {

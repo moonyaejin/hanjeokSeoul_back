@@ -43,14 +43,13 @@ public class SecurityConfig {
                                 "/api/users/register",
                                 "/api/users/logout",
                                 "/api/users/me",
-                                "/v3/api-docs",
-                                "/v3/api-docs/**",
                                 "/places/**",
+                                "/h2-console/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
+                                "/v3/api-docs/**",
                                 "/swagger-resources/**",
-                                "/webjars/**",
-                                "/h2-console/**"
+                                "/webjars/**"
                         ).permitAll()
                         .requestMatchers("/api/suggestions/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

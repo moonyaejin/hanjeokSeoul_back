@@ -5,14 +5,18 @@ import com.hanjeokseoul.quietseoul.dto.SuggestionFilterRequest;
 import com.hanjeokseoul.quietseoul.dto.SuggestionResponse;
 import com.hanjeokseoul.quietseoul.service.PlaceService;
 import com.hanjeokseoul.quietseoul.service.SuggestionService;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Parameter;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Place Recommendation", description = "추천 장소 관련 API")
 @RestController
 @RequestMapping("/api/places/recommendations")
 @RequiredArgsConstructor

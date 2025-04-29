@@ -15,8 +15,6 @@ public class PlaceReviewRecommendationResponse {
     private int reviewCount;
     private String category;
     private String district;
-
-    public static PlaceReviewRecommendationResponse of(Long placeId, String placeName, CongestionLevel congestionLevel, int reviewCount, String category, String district) {
-        return new PlaceReviewRecommendationResponse(placeId, placeName, congestionLevel, reviewCount, category, district);
-    }
+    private Double lat;
+    private Double lng;
 }

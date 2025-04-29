@@ -22,7 +22,6 @@ public class PlaceReviewResponse {
     private LocalDateTime createdAt;
     private CongestionLevel congestionLevel;
     private String writerUsername;
-    private String imageUrl;
     private List<String> imageUrls;
 
     public static PlaceReviewResponse from(PlaceReview placeReview) {

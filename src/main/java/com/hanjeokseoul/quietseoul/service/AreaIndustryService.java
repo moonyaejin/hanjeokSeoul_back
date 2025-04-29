@@ -50,7 +50,6 @@ public class AreaIndustryService {
             "한산한", 1, "보통", 2, "분주한", 3, "바쁜", 4
     );
 
-    // ✅ /industry/{areaCd}/score
     public Map<String, Integer> getScoreMap(String areaCd) {
         LocalDateTime now = LocalDateTime.now().minusHours(1);
         List<String> mids = new ArrayList<>(MID_TO_CATEGORY.keySet());
@@ -74,7 +73,6 @@ public class AreaIndustryService {
         return result;
     }
 
-    // ✅ /industry/{areaCd}/{category}
     public int getScoreByCategory(String areaCd, String category) {
         List<String> mids = MID_TO_CATEGORY.entrySet().stream()
                 .filter(e -> e.getValue().equals(category))

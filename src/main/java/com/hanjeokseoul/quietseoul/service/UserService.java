@@ -16,7 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider; // ✅ 추가!
+    private final JwtTokenProvider jwtTokenProvider;
 
     public UserEntity register(UserRegisterRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -55,6 +55,6 @@ public class UserService {
             user.setGender(request.getGender());
         }
 
-        return userRepository.save(user); // ✅ 여기에서 토큰 생성은 불필요하다면 생략 가능
+        return userRepository.save(user); // 토큰 생성은 불필요하다면 생략 가능
     }
 }

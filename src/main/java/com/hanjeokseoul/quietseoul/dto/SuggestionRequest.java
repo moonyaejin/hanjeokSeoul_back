@@ -2,6 +2,7 @@ package com.hanjeokseoul.quietseoul.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,18 +10,23 @@ import lombok.Setter;
 @Setter
 public class SuggestionRequest {
 
-    @NotBlank(message = "장소명은 필수입니다.")
+    @Schema(description = "장소명", example = "한강공원 반포지구")
+    @NotBlank
     private String placeName;
 
-    @NotBlank(message = "설명은 필수입니다.")
+    @Schema(description = "장소 설명", example = "조용하고 넓은 공간이에요.")
+    @NotBlank
     private String description;
 
-    @NotBlank(message = "주소는 필수입니다.")
+    @Schema(description = "주소", example = "서울특별시 서초구 반포동")
+    @NotBlank
     private String address;
 
-    @NotNull(message = "위도는 필수입니다.")
+    @Schema(description = "위도", example = "37.5123")
+    @NotNull
     private Double latitude;
 
-    @NotNull(message = "경도는 필수입니다.")
+    @Schema(description = "경도", example = "127.0145")
+    @NotNull
     private Double longitude;
 }

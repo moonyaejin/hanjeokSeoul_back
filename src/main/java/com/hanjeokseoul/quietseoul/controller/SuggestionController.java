@@ -5,7 +5,9 @@ import com.hanjeokseoul.quietseoul.domain.SuggestionEntity;
 import com.hanjeokseoul.quietseoul.dto.SuggestionRequest;
 import com.hanjeokseoul.quietseoul.dto.SuggestionResponse;
 import com.hanjeokseoul.quietseoul.domain.UserEntity;
-import com.hanjeokseoul.quietseoul.dto.SuggestionFilterRequest;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,10 +16,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import java.util.Map;
 import jakarta.validation.Valid;
-import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 
-
+@Tag(name = "Suggestion", description = "유저 제보 관련 API")
 @RestController
 @RequestMapping("/api/suggestions")
 @RequiredArgsConstructor
