@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum CongestionLevel {
-    CONGESTED(1), NORMAL(3), QUIET(5);
+    CONGESTED(5), CROWDED(4), NORMAL(3), QUIET(1);
 
     private final int score;
 
@@ -17,8 +17,9 @@ public enum CongestionLevel {
     }
 
     public static CongestionLevel fromAverage(double avg) {
-        if (avg < 1.5) return QUIET;
-        else if (avg < 2.5) return NORMAL;
+        if (avg < 2.0) return QUIET;
+        else if (avg < 3.0) return NORMAL;
+        else if (avg < 4.0) return CROWDED;
         else return CONGESTED;
     }
 }

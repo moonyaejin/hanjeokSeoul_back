@@ -62,24 +62,23 @@ public class SuggestionService {
     }
 
     public List<SuggestionResponse> filterSuggestions(SuggestionFilterRequest request) {
-        // 1. 기본: 승인된 제보만
         List<SuggestionEntity> suggestions = suggestionRepository.findByApprovedTrue();
 
-        // 2. category 필터링
+        // category 필터링 (ALL이 아닌 경우에만 필터)
         if (request.getCategory() != null && !request.getCategory().equalsIgnoreCase("ALL")) {
             suggestions = suggestions.stream()
-                    .filter(s -> s.getCategory().equalsIgnoreCase(request.getCategory()))
+                    .filter(s -> s.getCategory() != null && s.getCategory().equalsIgnoreCase(request.getCategory()))
                     .toList();
         }
 
-        // 3. 지역구(district) 필터링
+        // 지역구(district) 필터링 (ALL이 아닌 경우에만 필터)
+        // district 필터링 수정
         if (request.getDistrict() != null && !request.getDistrict().isEmpty()) {
             suggestions = suggestions.stream()
-                    .filter(s -> s.getDistrict().equalsIgnoreCase(request.getDistrict()))
+                    .filter(s -> s.getAddress() != null && s.getAddress().contains(request.getDistrict()))
                     .toList();
         }
 
-        // 4. 정렬
         if (request.getSort() != null) {
             switch (request.getSort()) {
                 case "quietness" -> {
@@ -101,7 +100,7 @@ public class SuggestionService {
                 }
                 case "review" -> {
                     suggestions = suggestions.stream()
-                            .sorted((a, b) -> b.getReviewCount() - a.getReviewCount())
+                            .sorted((a, b) -> Integer.compare(b.getReviewCount(), a.getReviewCount()))
                             .toList();
                 }
                 case "popularity" -> {
@@ -109,28 +108,34 @@ public class SuggestionService {
                             .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
                             .toList();
                 }
+                default -> {
+                    // "sort"가 명시적으로 quietness/distance/review/popularity가 아니면, 정렬 스킵
+                }
             }
         }
 
-        // 5. Entity -> DTO 변환
         return suggestions.stream()
                 .map(s -> new SuggestionResponse(
-                        s.getId(), s.getPlaceName(), s.getAddress(),
-                        s.getDescription(), s.getLatitude(), s.getLongitude(), s.isApproved()
+                        s.getId(),
+                        s.getPlaceName(),
+                        s.getAddress(),
+                        s.getDescription(),
+                        s.getLatitude(),
+                        s.getLongitude(),
+                        s.isApproved()
                 ))
                 .toList();
     }
 
-    // 거리 계산 함수
     private double distance(double lat1, double lng1, double lat2, double lng2) {
         final int EARTH_RADIUS_KM = 6371;
 
         double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
 
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
                 + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                + Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                * Math.sin(dLng / 2) * Math.sin(dLng / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 

@@ -79,12 +79,4 @@ public class SuggestionController {
         suggestionService.adminDelete(id);
         return ResponseEntity.ok(Map.of("message", "관리자에 의해 제보가 삭제되었습니다."));
     }
-
-    @GetMapping("/filter")
-    public ResponseEntity<List<SuggestionResponse>> filterSuggestions(
-            @ModelAttribute SuggestionFilterRequest request
-    ) {
-        List<SuggestionResponse> filteredSuggestions = suggestionService.filterSuggestions(request);
-        return ResponseEntity.ok(filteredSuggestions);
-    }
 }
