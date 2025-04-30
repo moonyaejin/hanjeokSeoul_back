@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PlaceService {
+
     private final PlaceRepository placeRepository;
     private final AreaRepository areaRepository;
     private final PlaceReviewRepository placeReviewRepository;
@@ -146,7 +147,8 @@ public class PlaceService {
                 .lng(place.getLng())
                 .avgRating(place.getAvgRating())
                 .reviewCount(placeReviewRepository.countByPlaceId(place.getId()))
-                .imageUrl(null)
+                .imageUrl(place.getImageUrl())
+                .areaCd(place.getArea() != null ? place.getArea().getAreaCd() : null)
                 .build();
     }
 }
