@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface PlaceReviewRepository extends JpaRepository<PlaceReview, Long> {
 
+    int countByPlaceId(Long placeId);
+
     List<PlaceReview> findByPlaceId(Long placeId);
 
     Optional<PlaceReview> findByIdAndPlaceId(Long reviewId, Long placeId);

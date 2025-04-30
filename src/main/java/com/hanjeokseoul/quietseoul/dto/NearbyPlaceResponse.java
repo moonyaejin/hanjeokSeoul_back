@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Getter
 @Setter
@@ -31,5 +32,11 @@ public class NearbyPlaceResponse {
         private double lat;
         private double lng;
         private double avgRating;
+
+        @Schema(description = "리뷰 개수")
+        private Integer reviewCount;
+
+        @Schema(description = "대표 이미지 URL")
+        private String imageUrl;
     }
 }
