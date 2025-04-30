@@ -1,12 +1,15 @@
 package com.hanjeokseoul.quietseoul.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CurrentCongestionResponse {
+public class RelaxedPlaceResponse {
     private String name;
     private String type;
-    private String congestionLevel;
+    private String level;
     private String imageUrl;
+    private String description;
 }
+
