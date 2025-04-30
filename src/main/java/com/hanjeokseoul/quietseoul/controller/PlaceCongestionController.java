@@ -3,6 +3,7 @@ package com.hanjeokseoul.quietseoul.controller;
 import com.hanjeokseoul.quietseoul.domain.PlaceCongestion;
 import com.hanjeokseoul.quietseoul.dto.CurrentCongestionResponse;
 import com.hanjeokseoul.quietseoul.dto.DailyForecastResponse;
+import com.hanjeokseoul.quietseoul.dto.DailySummaryResponse;
 import com.hanjeokseoul.quietseoul.dto.RelaxedPlaceResponse;
 import com.hanjeokseoul.quietseoul.service.PlaceCongestionService;
 import lombok.RequiredArgsConstructor;
@@ -53,4 +54,10 @@ public class PlaceCongestionController {
                 .sorted(Comparator.comparing(DailyForecastResponse::getDate))
                 .toList();
     }
+
+    @GetMapping("/weekly-summary/{name}")
+    public List<DailySummaryResponse> getDailySummaryByName(@PathVariable String name) {
+        return placeCongestionService.getDailySummaryByNameOnly(name);
+    }
+
 }

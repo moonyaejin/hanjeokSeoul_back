@@ -13,5 +13,5 @@ public interface PlaceCongestionRepository extends JpaRepository<PlaceCongestion
     List<PlaceCongestion> findByNameAndTypeAndCongestionDateBetween(String name, String type, LocalDate start, LocalDate end);
     List<PlaceCongestion> findByCongestionDateAndCongestionHourAndCongestionLevel(
             LocalDate date, int hour, String level);
-
+    List<PlaceCongestion> findByNameAndCongestionDateBetween(String name, LocalDate start, LocalDate end);
 }

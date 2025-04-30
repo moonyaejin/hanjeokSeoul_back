@@ -4,6 +4,7 @@ import com.hanjeokseoul.quietseoul.domain.PlaceCongestion;
 import com.hanjeokseoul.quietseoul.domain.PredPlace;
 import com.hanjeokseoul.quietseoul.dto.CurrentCongestionResponse;
 import com.hanjeokseoul.quietseoul.dto.DailyForecastResponse;
+import com.hanjeokseoul.quietseoul.dto.DailySummaryResponse;
 import com.hanjeokseoul.quietseoul.dto.RelaxedPlaceResponse;
 import com.hanjeokseoul.quietseoul.repository.PlaceCongestionRepository;
 import com.hanjeokseoul.quietseoul.repository.PredPlaceRepository;
@@ -86,4 +87,33 @@ public class PlaceCongestionService {
 
         return List.of(); // 아무 것도 없을 경우
     }
+
+    public List<DailySummaryResponse> getDailySummaryByNameOnly(String name) {
+        LocalDate start = LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(1);
+        LocalDate end = start.plusDays(6);
+
+        List<PlaceCongestion> all = repository.findByNameAndCongestionDateBetween(name, start, end);
+
+        Map<LocalDate, List<PlaceCongestion>> grouped = all.stream()
+                .collect(Collectors.groupingBy(PlaceCongestion::getCongestionDate));
+
+        return grouped.entrySet().stream()
+                .map(e -> new DailySummaryResponse(
+                        e.getKey(),
+                        summarizeDailyLevel(e.getValue().stream()
+                                .map(PlaceCongestion::getCongestionLevel)
+                                .toList())
+                ))
+                .sorted(Comparator.comparing(DailySummaryResponse::getDate))
+                .toList();
+    }
+
+    private String summarizeDailyLevel(List<String> levels) {
+        List<String> priority = List.of("혼잡", "약간 혼잡", "보통", "여유");
+        for (String p : priority) {
+            if (levels.contains(p)) return p;
+        }
+        return "여유";
+    }
+
 }
