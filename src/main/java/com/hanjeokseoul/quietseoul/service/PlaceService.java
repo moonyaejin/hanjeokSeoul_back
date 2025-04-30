@@ -77,6 +77,7 @@ public class PlaceService {
 
         return NearbyPlaceResponse.builder()
                 .baseArea(baseAreaName)
+                .areaCd(areaCd)
                 .category(randomCategory)
                 .places(sortedPlaces)
                 .build();

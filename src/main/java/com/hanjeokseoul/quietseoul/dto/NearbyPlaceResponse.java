@@ -20,6 +20,9 @@ public class NearbyPlaceResponse {
     @Schema(description = "기준 지역 이름")
     private String baseArea;
 
+    @Schema(description = "지역 코드")
+    private String areaCd;
+
     @Schema(description = "카테고리 (예: 식당, 카페)")
     private String category;
 
