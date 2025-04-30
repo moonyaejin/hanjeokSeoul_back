@@ -25,6 +25,13 @@ public class PlaceController {
         return ResponseEntity.ok(placeService.getPlaceDetail(id));
     }
 
+    @GetMapping("/area")
+    public ResponseEntity<List<PlaceResponse>> getPlacesByArea(
+            @RequestParam String areaCd
+    ) {
+        return ResponseEntity.ok(placeService.getPlacesByArea(areaCd));
+    }
+
     @GetMapping("/category")
     public ResponseEntity<List<PlaceResponse>> getByAreaAndCategory(
             @RequestParam String areaCd,
