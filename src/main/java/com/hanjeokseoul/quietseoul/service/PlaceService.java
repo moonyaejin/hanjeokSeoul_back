@@ -77,6 +77,7 @@ public class PlaceService {
 
         return NearbyPlaceResponse.builder()
                 .baseArea(baseAreaName)
+                .areaCd(areaCd)
                 .category(randomCategory)
                 .places(sortedPlaces)
                 .build();
@@ -150,5 +151,11 @@ public class PlaceService {
                 .imageUrl(place.getImageUrl())
                 .areaCd(place.getArea() != null ? place.getArea().getAreaCd() : null)
                 .build();
+    }
+
+    public List<PlaceResponse> getPlacesByArea(String areaCd) {
+        return placeRepository.findByArea_AreaCd(areaCd).stream()
+                .map(PlaceResponse::from)
+                .collect(Collectors.toList());
     }
 }

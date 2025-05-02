@@ -20,13 +20,19 @@ public class AreaLiveService {
 
     public List<AreaLiveResponse> getAll() {
         return repository.findAll().stream()
-                .map(AreaLiveResponse::from)
+                .map(live -> {
+                    Area area = areaRepository.findById(live.getAreaCd()).orElse(null);
+                    return AreaLiveResponse.from(live, area);
+                })
                 .collect(Collectors.toList());
     }
 
     public List<AreaLiveResponse> getByAreaCd(String areaCd) {
         return repository.findByAreaCd(areaCd).stream()
-                .map(AreaLiveResponse::from)
+                .map(live -> {
+                    Area area = areaRepository.findById(areaCd).orElse(null);
+                    return AreaLiveResponse.from(live, area);
+                })
                 .collect(Collectors.toList());
     }
 

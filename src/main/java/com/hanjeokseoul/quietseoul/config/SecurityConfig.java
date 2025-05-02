@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +40,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/",
+                                "/", "/index.html", "/favicon.ico",
                                 "/api/users/login",
                                 "/api/users/register",
                                 "/api/users/logout",
@@ -53,7 +55,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/suggestions/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()   //authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -69,5 +71,20 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    // ✅ CORS 설정 추가
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:8080")
+                        .allowedMethods("*")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }

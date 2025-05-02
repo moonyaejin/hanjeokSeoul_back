@@ -40,14 +40,14 @@ public class AreaIndustryService {
             Map.entry("스포츠/문화/레저", "여가"),
             Map.entry("편의점", "유통"),
             Map.entry("할인점/슈퍼마켓", "유통"),
-            Map.entry("미용서비스", "패션·뷰티"),
-            Map.entry("의복/의류", "패션·뷰티"),
-            Map.entry("패션/잡화", "패션·뷰티"),
-            Map.entry("화장품", "패션·뷰티")
+            Map.entry("미용서비스", "패션뷰티"),
+            Map.entry("의복/의류", "패션뷰티"),
+            Map.entry("패션/잡화", "패션뷰티"),
+            Map.entry("화장품", "패션뷰티")
     );
 
     private static final Map<String, Integer> PAYMENT_SCORE = Map.of(
-            "한산한", 1, "보통", 2, "분주한", 3, "바쁜", 4
+            "한산한", 4, "보통", 3, "분주한", 2, "바쁜", 1
     );
 
     public Map<String, Integer> getScoreMap(String areaCd) {

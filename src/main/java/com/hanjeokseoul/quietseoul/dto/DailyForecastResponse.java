@@ -14,7 +14,7 @@ public class DailyForecastResponse {
     @Getter
     @AllArgsConstructor
     public static class HourlyForecast {
-        private Integer hour;
+        private int hour;
         private String congestionLevel;
     }
 }

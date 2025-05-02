@@ -1,5 +1,6 @@
 package com.hanjeokseoul.quietseoul.dto;
 
+import com.hanjeokseoul.quietseoul.domain.Area;
 import com.hanjeokseoul.quietseoul.domain.AreaLive;
 import lombok.*;
 
@@ -25,9 +26,11 @@ public class AreaLiveResponse {
     private Integer areaShPaymentAmtMax;
     private LocalDateTime createdAt;
 
-    public static AreaLiveResponse from(AreaLive entity) {
+    public static AreaLiveResponse from(AreaLive entity, Area area) {
         return AreaLiveResponse.builder()
                 .areaCd(entity.getAreaCd())
+                .areaNm(area != null ? area.getAreaNm() : null)
+                .imageUrl(area != null ? area.getImageUrl() : null)
                 .ppltnTime(entity.getPpltnTime())
                 .areaCongestLvl(entity.getAreaCongestLvl())
                 .areaCongestMsg(entity.getAreaCongestMsg())
