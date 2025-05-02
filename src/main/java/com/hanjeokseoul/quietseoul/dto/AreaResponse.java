@@ -17,6 +17,7 @@ public class AreaResponse {
     private Integer categoryId;
     private String imageUrl;
     private String areaCongestLvl;
+    private String areaCongestMsg;
 
     public static AreaResponse from(Area area) {
         return AreaResponse.builder()
@@ -26,6 +27,19 @@ public class AreaResponse {
                 .categoryId(area.getCategoryId())
                 .imageUrl(area.getImageUrl())
                 .areaCongestLvl(area.getCongestLvl())
+                .areaCongestMsg(null)
+                .build();
+    }
+
+    public static AreaResponse from(Area area, String congestLvl, String congestMsg) {
+        return AreaResponse.builder()
+                .areaCd(area.getAreaCd())
+                .areaNm(area.getAreaNm())
+                .districtId(area.getDistrictId())
+                .categoryId(area.getCategoryId())
+                .imageUrl(area.getImageUrl())
+                .areaCongestLvl(congestLvl)
+                .areaCongestMsg(congestMsg)
                 .build();
     }
 }
