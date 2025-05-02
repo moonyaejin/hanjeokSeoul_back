@@ -16,6 +16,7 @@ public class AreaResponse {
     private Integer districtId;
     private Integer categoryId;
     private String imageUrl;
+    private String areaCongestLvl;
 
     public static AreaResponse from(Area area) {
         return AreaResponse.builder()
@@ -24,6 +25,7 @@ public class AreaResponse {
                 .districtId(area.getDistrictId())
                 .categoryId(area.getCategoryId())
                 .imageUrl(area.getImageUrl())
+                .areaCongestLvl(area.getCongestLvl())
                 .build();
     }
 }

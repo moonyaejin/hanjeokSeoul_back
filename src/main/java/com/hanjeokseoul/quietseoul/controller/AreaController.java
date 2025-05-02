@@ -36,7 +36,7 @@ public class AreaController {
     }
 
     @GetMapping("/district/{districtId}")
-    public ResponseEntity<List<Area>> getByDistrict(@PathVariable Integer districtId) {
+    public ResponseEntity<List<AreaResponse>> getByDistrict(@PathVariable Integer districtId) {
         return ResponseEntity.ok(areaService.getAreasByDistrictId(districtId));
     }
 

@@ -1,8 +1,8 @@
 # OpenJDK 17 기반 이미지 사용
-FROM openjdk:17-jdk-alpine
+FROM openjdk:17-jdk-slim
 
 # JAR 파일을 이미지에 복사
-ARG JAR_FILE=build/libs/quietseoul-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=build/libs/app.jar
 COPY ${JAR_FILE} app.jar
 
 # 포트 오픈

@@ -34,6 +34,10 @@ public class Area {
     @Column(nullable = false)
     private double lng;
 
+    @Column(name = "congest_lvl")
+    private String congestLvl;
+
+
     public Area(String areaCd, String areaNm) {
         this.areaCd = areaCd;
         this.areaNm = areaNm;

@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 public class AreaService {
     private final AreaRepository areaRepository;
 
-    public List<Area> getAreasByDistrictId(Integer districtId) {
-        return areaRepository.findByDistrictId(districtId);
+    public List<AreaResponse> getAreasByDistrictId(Integer districtId) {
+        return areaRepository.findByDistrictId(districtId).stream()
+                .map(AreaResponse::from)
+                .collect(Collectors.toList());
     }
 
     public List<AreaResponse> getAllAreas() {
