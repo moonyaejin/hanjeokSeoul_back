@@ -20,6 +20,9 @@ public class AreaLive {
     @Column(name = "area_cd")
     private String areaCd;
 
+    @Column(name = "area_nm")
+    private String areaNm;
+
     @Column(name = "ppltn_time")
     private String ppltnTime;
 
