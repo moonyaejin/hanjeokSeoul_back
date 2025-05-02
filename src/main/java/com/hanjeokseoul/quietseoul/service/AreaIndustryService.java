@@ -47,7 +47,7 @@ public class AreaIndustryService {
     );
 
     private static final Map<String, Integer> PAYMENT_SCORE = Map.of(
-            "한산한", 1, "보통", 2, "분주한", 3, "바쁜", 4
+            "한산한", 4, "보통", 3, "분주한", 2, "바쁜", 1
     );
 
     public Map<String, Integer> getScoreMap(String areaCd) {
