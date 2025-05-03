@@ -159,7 +159,7 @@ public class PlaceService {
     }
 
     public List<PlaceResponse> getPlacesByArea(String areaCd) {
-        return placeRepository.findByArea_AreaCd(areaCd).stream()
+        return placeRepository.findByArea_AreaCdAndLatIsNotNullAndLngIsNotNull(areaCd).stream()
                 .map(PlaceResponse::from)
                 .collect(Collectors.toList());
     }
