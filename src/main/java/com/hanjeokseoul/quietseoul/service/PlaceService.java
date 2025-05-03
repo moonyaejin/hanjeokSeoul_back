@@ -93,12 +93,13 @@ public class PlaceService {
                     return PlaceReviewRecommendationResponse.builder()
                             .placeId(place.getId())
                             .placeName(place.getName())
-                            .averageCongestionLevel(CongestionLevel.QUIET)
-                            .reviewCount(rp.getReviewCount().intValue())
                             .category(place.getCategory())
-                            .district(place.getArea() != null ? place.getArea().getDistrict() : null)
-                            .lat(place.getLat())
-                            .lng(place.getLng())
+                            .district(rp.getDistrict())
+                            .lat(rp.getLat())
+                            .lng(rp.getLng())
+                            .averageCongestionScore(rp.getAvgScore())
+                            .congestionLevel(CongestionLevel.fromAverageScore(rp.getAvgScore()).getLevel()) // 계산된 혼잡도 등급 (1~4)
+                            .reviewCount(rp.getReviewCount())
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -114,12 +115,16 @@ public class PlaceService {
             switch (request.getSort()) {
                 case "quietness" -> {
                     places = places.stream()
-                            .sorted(Comparator.comparingInt(p -> p.getAverageCongestionLevel().getScore()))
+                            .sorted(Comparator.comparingDouble(PlaceReviewRecommendationResponse::getAverageCongestionScore))
                             .collect(Collectors.toList());
                 }
                 case "review" -> {
-                    places = FilterSortUtils.applyReviewSort(places, PlaceReviewRecommendationResponse::getReviewCount);
+                    places = FilterSortUtils.applyReviewSort(
+                            places,
+                            p -> p.getReviewCount() != null ? p.getReviewCount().intValue() : 0
+                    );
                 }
+
                 case "distance" -> {
                     if (request.getLat() != null && request.getLng() != null) {
                         double lat = request.getLat();

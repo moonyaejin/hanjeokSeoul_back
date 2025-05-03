@@ -11,10 +11,12 @@ import lombok.Getter;
 public class PlaceReviewRecommendationResponse {
     private Long placeId;
     private String placeName;
-    private CongestionLevel averageCongestionLevel;
-    private int reviewCount;
     private String category;
     private String district;
     private Double lat;
     private Double lng;
+    private Long reviewCount;
+
+    private Double averageCongestionScore;
+    private Integer congestionLevel;
 }

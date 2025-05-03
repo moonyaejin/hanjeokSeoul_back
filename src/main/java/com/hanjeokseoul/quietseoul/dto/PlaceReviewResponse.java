@@ -21,6 +21,7 @@ public class PlaceReviewResponse {
     private LocalDate visitDate;
     private LocalDateTime createdAt;
     private CongestionLevel congestionLevel;
+    private int congestionScore;
     private String writerUsername;
     private List<String> imageUrls;
 
@@ -35,8 +36,10 @@ public class PlaceReviewResponse {
                 .visitDate(placeReview.getVisitDate())
                 .createdAt(placeReview.getCreatedAt())
                 .congestionLevel(placeReview.getCongestionLevel())
+                .congestionScore(placeReview.getCongestionLevel().getScore())
                 .writerUsername(placeReview.getWriter().getUsername())
                 .imageUrls(imageUrls)
                 .build();
     }
+
 }

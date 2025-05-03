@@ -37,16 +37,22 @@ public class PlaceReviewService {
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        // 핵심 변경: 점수를 enum으로 변환
+        CongestionLevel level = CongestionLevel.fromExactScore(request.getCongestionScore());
+
         PlaceReview review = PlaceReview.builder()
                 .place(place)
                 .writer(user)
-                .congestionLevel(request.getCongestionLevel())
+                .congestionLevel(level)
                 .comment(request.getComment())
                 .visitDate(request.getVisitDate())
                 .createdAt(LocalDateTime.now())
                 .build();
 
         placeReviewRepository.save(review);
+
+        // 이하 생략 (이미지, 평균 평점 갱신 등은 그대로)
+
 
         // 이미지 업로드
         if (request.getImageUrlList() != null && !request.getImageUrlList().isEmpty()) {

@@ -19,19 +19,28 @@ public interface PlaceReviewRepository extends JpaRepository<PlaceReview, Long> 
     List<PlaceReview> findByPlace(Place place);
 
     @Query(value = """
-        SELECT pr.place_id AS placeId,
-               AVG(CASE
-                    WHEN pr.congestion_level = 'QUIET' THEN 1
-                    WHEN pr.congestion_level = 'NORMAL' THEN 3
-                    WHEN pr.congestion_level = 'CROWDED' THEN 4
-                    WHEN pr.congestion_level = 'CONGESTED' THEN 5
-                    ELSE 3
-               END) AS avgScore,
-               COUNT(*) AS reviewCount
-        FROM place_review pr
-        GROUP BY pr.place_id
-        HAVING avgScore < 3
-        ORDER BY reviewCount DESC
-        """, nativeQuery = true)
+    SELECT 
+        p.id AS placeId,
+        p.name AS placeName,
+        p.category AS category,
+        d.name AS district,
+        p.lat AS lat,
+        p.lng AS lng,
+        AVG(CASE
+            WHEN pr.congestion_level = 'QUIET' THEN 1
+            WHEN pr.congestion_level = 'NORMAL' THEN 3
+            WHEN pr.congestion_level = 'CROWDED' THEN 4
+            WHEN pr.congestion_level = 'CONGESTED' THEN 5
+            ELSE 3
+        END) AS avgScore,
+        COUNT(*) AS reviewCount
+    FROM place_review pr
+    JOIN place p ON pr.place_id = p.id
+    JOIN area a ON p.area_cd = a.area_cd 
+    JOIN district d ON a.district_id = d.id
+    GROUP BY pr.place_id, p.id, p.name, p.category, p.lat, p.lng, d.name
+    ORDER BY reviewCount DESC
+""", nativeQuery = true)
     List<PlaceRecommendationProjection> findRecommendedPlaces();
+
 }
