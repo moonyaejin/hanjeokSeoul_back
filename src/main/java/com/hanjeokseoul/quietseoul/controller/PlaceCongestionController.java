@@ -1,11 +1,13 @@
 package com.hanjeokseoul.quietseoul.controller;
 
-import com.hanjeokseoul.quietseoul.domain.PlaceCongestion;
+import com.hanjeokseoul.quietseoul.domain.Forecast;
 import com.hanjeokseoul.quietseoul.dto.CurrentCongestionResponse;
 import com.hanjeokseoul.quietseoul.dto.DailyForecastResponse;
 import com.hanjeokseoul.quietseoul.dto.DailySummaryResponse;
 import com.hanjeokseoul.quietseoul.dto.RelaxedPlaceResponse;
+import com.hanjeokseoul.quietseoul.service.ForecastService;
 import com.hanjeokseoul.quietseoul.service.PlaceCongestionService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +21,8 @@ import java.util.stream.Collectors;
 public class PlaceCongestionController {
 
     private final PlaceCongestionService placeCongestionService;
+    private final ForecastService forecastService;
 
-    // 현재 혼잡도 전체 조회
     @GetMapping("/current")
     public List<CurrentCongestionResponse> getCurrentCongestions() {
         return placeCongestionService.getCurrentCongestionsWithInfo();
@@ -31,23 +33,29 @@ public class PlaceCongestionController {
         return placeCongestionService.getRelaxedPlacesWithInfo();
     }
 
-    // 장소별 주간 예측 혼잡도 조회
+
     @GetMapping("/weekly/{type}/{name}")
     public List<DailyForecastResponse> getWeeklyForecast(
             @PathVariable String type,
             @PathVariable String name
     ) {
-        Map<LocalDate, List<PlaceCongestion>> forecastMap =
-                placeCongestionService.getWeeklyForecastByPlace(name, type);
+        Map<LocalDate, List<Forecast>> forecastMap = forecastService.getWeeklyForecast(type, name);
+        Map<String, String> congestionMap = placeCongestionService
+                .getWeeklyCongestionLevelMap(name, type); // (1) 날짜+시간 → 혼잡도 매핑
 
         return forecastMap.entrySet().stream()
                 .map(e -> new DailyForecastResponse(
                         e.getKey(),
                         e.getValue().stream()
-                                .map(c -> new DailyForecastResponse.HourlyForecast(
-                                        c.getCongestionHour(),
-                                        c.getCongestionLevel()
-                                ))
+                                .map(f -> {
+                                    String key = f.getForecastDate().toString() + "_" + f.getForecastHour();
+                                    String level = congestionMap.getOrDefault(key, null);
+                                    return new DailyForecastResponse.HourlyForecast(
+                                            f.getForecastHour(),
+                                            level,
+                                            f.getYhat()
+                                    );
+                                })
                                 .sorted(Comparator.comparing(DailyForecastResponse.HourlyForecast::getHour))
                                 .toList()
                 ))
@@ -55,9 +63,9 @@ public class PlaceCongestionController {
                 .toList();
     }
 
+
     @GetMapping("/weekly-summary/{name}")
     public List<DailySummaryResponse> getDailySummaryByName(@PathVariable String name) {
         return placeCongestionService.getDailySummaryByNameOnly(name);
     }
-
 }
