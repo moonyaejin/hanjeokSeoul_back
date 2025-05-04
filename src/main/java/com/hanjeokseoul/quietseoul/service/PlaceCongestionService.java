@@ -23,6 +23,7 @@ public class PlaceCongestionService {
     private final PredPlaceRepository predPlaceRepository;
 
     private final List<String> levelPriority = List.of("여유", "보통", "약간 혼잡", "혼잡");
+    private final PlaceCongestionRepository placeCongestionRepository;
 
     public List<PlaceCongestion> getCurrentCongestions() {
         LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
@@ -115,5 +116,29 @@ public class PlaceCongestionService {
         }
         return "여유";
     }
+
+    public Map<String, String> getWeeklyCongestionLevelMap(String name, String type) {
+        LocalDate start = LocalDate.now().plusDays(1);
+        LocalDate end = start.plusDays(6);
+
+        List<PlaceCongestion> list = placeCongestionRepository
+                .findByNameAndTypeAndCongestionDateBetween(name, type, start, end);
+
+        return list.stream()
+                .collect(Collectors.toMap(
+                        pc -> pc.getCongestionDate().toString() + "_" + pc.getCongestionHour(),
+                        PlaceCongestion::getCongestionLevel
+                ));
+    }
+
+    public Map<LocalDate, List<PlaceCongestion>> getWeeklyStayPopulation(String name, String type) {
+        LocalDate start = LocalDate.now().plusDays(1);
+        LocalDate end = start.plusDays(6);
+        List<PlaceCongestion> list = placeCongestionRepository.findByNameAndTypeAndCongestionDateBetween(name, type, start, end);
+
+        return list.stream()
+                .collect(Collectors.groupingBy(PlaceCongestion::getCongestionDate));
+    }
+
 
 }
