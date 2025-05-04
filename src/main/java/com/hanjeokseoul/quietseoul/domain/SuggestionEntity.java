@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 public class SuggestionEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // UUID → Long
+    private Long id;
 
     private String placeName;
     private String address;
     private String description;
 
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 
     private boolean approved = false;
 
@@ -29,12 +29,12 @@ public class SuggestionEntity {
 
     private String category;
     private String district;
-    private double quietScore;
-    private int reviewCount;
+    private Double quietScore = 0.0;
+    private Integer reviewCount = 0;
     private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = LocalDateTime.now(); // 저장될 때 자동으로 현재 시간 입력
+        this.createdAt = LocalDateTime.now();
     }
 }

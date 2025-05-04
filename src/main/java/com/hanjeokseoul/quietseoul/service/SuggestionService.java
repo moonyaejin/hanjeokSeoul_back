@@ -1,14 +1,12 @@
 package com.hanjeokseoul.quietseoul.service;
 
-import com.hanjeokseoul.quietseoul.dto.SuggestionRequest;
 import com.hanjeokseoul.quietseoul.domain.SuggestionEntity;
 import com.hanjeokseoul.quietseoul.domain.UserEntity;
 import com.hanjeokseoul.quietseoul.dto.SuggestionFilterRequest;
+import com.hanjeokseoul.quietseoul.dto.SuggestionRequest;
 import com.hanjeokseoul.quietseoul.dto.SuggestionResponse;
 import com.hanjeokseoul.quietseoul.repository.SuggestionRepository;
-import com.hanjeokseoul.quietseoul.util.DistanceUtils;
 import com.hanjeokseoul.quietseoul.util.FilterSortUtils;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +21,7 @@ public class SuggestionService {
     public SuggestionEntity create(SuggestionRequest request, UserEntity user) {
         SuggestionEntity suggestion = new SuggestionEntity();
         suggestion.setPlaceName(request.getPlaceName());
+        suggestion.setCategory(request.getCategory());
         suggestion.setAddress(request.getAddress());
         suggestion.setDescription(request.getDescription());
         suggestion.setLatitude(request.getLatitude());
@@ -31,7 +30,13 @@ public class SuggestionService {
         return suggestionRepository.save(suggestion);
     }
 
-    public void delete(String id, UserEntity user) {
+    public SuggestionResponse getSuggestionDetail(Long id) {
+        SuggestionEntity suggestion = suggestionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Suggestion not found"));
+        return SuggestionResponse.from(suggestion);
+    }
+
+    public void delete(Long id, UserEntity user) {
         SuggestionEntity suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("제보를 찾을 수 없습니다."));
 
@@ -42,15 +47,14 @@ public class SuggestionService {
         suggestionRepository.delete(suggestion);
     }
 
-    public void approve(String id) {
+    public void approve(Long id) {
         SuggestionEntity suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("제보를 찾을 수 없습니다."));
-
         suggestion.setApproved(true);
         suggestionRepository.save(suggestion);
     }
 
-    public void adminDelete(String id) {
+    public void adminDelete(Long id) {
         SuggestionEntity suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("제보를 찾을 수 없습니다."));
         suggestionRepository.delete(suggestion);
@@ -68,12 +72,8 @@ public class SuggestionService {
 
         if (request.getSort() != null) {
             switch (request.getSort()) {
-                case "quietness" -> {
-                    suggestions = FilterSortUtils.applyQuietnessSort(suggestions, SuggestionEntity::getQuietScore);
-                }
-                case "review" -> {
-                    suggestions = FilterSortUtils.applyReviewSort(suggestions, SuggestionEntity::getReviewCount);
-                }
+                case "quietness" -> suggestions = FilterSortUtils.applyQuietnessSort(suggestions, SuggestionEntity::getQuietScore);
+                case "review" -> suggestions = FilterSortUtils.applyReviewSort(suggestions, SuggestionEntity::getReviewCount);
                 case "distance" -> {
                     if (request.getLat() != null && request.getLng() != null) {
                         double lat = request.getLat();
@@ -87,22 +87,11 @@ public class SuggestionService {
                         );
                     }
                 }
-                default -> {
-                    // 정렬 스킵
-                }
             }
         }
 
         return suggestions.stream()
-                .map(s -> new SuggestionResponse(
-                        s.getId(),
-                        s.getPlaceName(),
-                        s.getAddress(),
-                        s.getDescription(),
-                        s.getLatitude(),
-                        s.getLongitude(),
-                        s.isApproved()
-                ))
+                .map(SuggestionResponse::from)
                 .toList();
     }
 }

@@ -14,9 +14,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import lombok.RequiredArgsConstructor;
-import java.util.Map;
+
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Suggestion", description = "유저 제보 관련 API")
 @RestController
@@ -31,10 +32,7 @@ public class SuggestionController {
     public ResponseEntity<List<SuggestionResponse>> getApprovedSuggestions() {
         List<SuggestionEntity> approved = suggestionService.findApproved();
         List<SuggestionResponse> result = approved.stream()
-                .map(s -> new SuggestionResponse(
-                        s.getId(), s.getPlaceName(), s.getAddress(),
-                        s.getDescription(), s.getLatitude(), s.getLongitude(), s.isApproved()
-                ))
+                .map(SuggestionResponse::from)
                 .toList();
         return ResponseEntity.ok(result);
     }
@@ -44,22 +42,24 @@ public class SuggestionController {
             @Valid @RequestBody SuggestionRequest request,
             Authentication authentication
     ) {
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return ResponseEntity.status(401).build(); // 인증 안 된 경우 401 반환
+        }
+
         UserEntity user = (UserEntity) authentication.getPrincipal();
-        SuggestionEntity suggestion = suggestionService.create(request, user); // 여기!
-        return ResponseEntity.ok(new SuggestionResponse(
-                suggestion.getId(),
-                suggestion.getPlaceName(),
-                suggestion.getAddress(),
-                suggestion.getDescription(),
-                suggestion.getLatitude(),
-                suggestion.getLongitude(),
-                suggestion.isApproved()
-        ));
+        SuggestionEntity suggestion = suggestionService.create(request, user);
+        return ResponseEntity.ok(SuggestionResponse.from(suggestion));
+    }
+
+
+    @GetMapping("/suggestion/{id}")
+    public ResponseEntity<SuggestionResponse> getSuggestionById(@PathVariable Long id) {
+        return ResponseEntity.ok(suggestionService.getSuggestionDetail(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSuggestion(
-            @PathVariable String id,
+            @PathVariable Long id,
             Authentication authentication
     ) {
         UserEntity user = (UserEntity) authentication.getPrincipal();
@@ -69,14 +69,14 @@ public class SuggestionController {
 
     @PatchMapping("/admin/{id}/approve")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> approveSuggestion(@PathVariable String id) {
+    public ResponseEntity<?> approveSuggestion(@PathVariable Long id) {
         suggestionService.approve(id);
         return ResponseEntity.ok(Map.of("message", "제보가 승인되었습니다."));
     }
 
     @DeleteMapping("/admin/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteSuggestionByAdmin(@PathVariable String id) {
+    public ResponseEntity<?> deleteSuggestionByAdmin(@PathVariable Long id) {
         suggestionService.adminDelete(id);
         return ResponseEntity.ok(Map.of("message", "관리자에 의해 제보가 삭제되었습니다."));
     }

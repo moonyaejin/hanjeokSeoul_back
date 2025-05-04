@@ -130,7 +130,7 @@ public class PlaceService {
                         double lat = request.getLat();
                         double lng = request.getLng();
                         places = FilterSortUtils.applyDistanceSort(
-                                places,
+                                 places,
                                 lat,
                                 lng,
                                 PlaceReviewRecommendationResponse::getLat,
