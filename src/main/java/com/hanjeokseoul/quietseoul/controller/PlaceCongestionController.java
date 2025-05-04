@@ -1,6 +1,7 @@
 package com.hanjeokseoul.quietseoul.controller;
 
 import com.hanjeokseoul.quietseoul.domain.Forecast;
+import com.hanjeokseoul.quietseoul.domain.PlaceCongestion;
 import com.hanjeokseoul.quietseoul.dto.CurrentCongestionResponse;
 import com.hanjeokseoul.quietseoul.dto.DailyForecastResponse;
 import com.hanjeokseoul.quietseoul.dto.DailySummaryResponse;
@@ -39,30 +40,23 @@ public class PlaceCongestionController {
             @PathVariable String type,
             @PathVariable String name
     ) {
-        Map<LocalDate, List<Forecast>> forecastMap = forecastService.getWeeklyForecast(type, name);
-        Map<String, String> congestionMap = placeCongestionService
-                .getWeeklyCongestionLevelMap(name, type); // (1) 날짜+시간 → 혼잡도 매핑
+        Map<LocalDate, List<PlaceCongestion>> dataMap = placeCongestionService.getWeeklyStayPopulation(name, type);
 
-        return forecastMap.entrySet().stream()
+        return dataMap.entrySet().stream()
                 .map(e -> new DailyForecastResponse(
                         e.getKey(),
                         e.getValue().stream()
-                                .map(f -> {
-                                    String key = f.getForecastDate().toString() + "_" + f.getForecastHour();
-                                    String level = congestionMap.getOrDefault(key, null);
-                                    return new DailyForecastResponse.HourlyForecast(
-                                            f.getForecastHour(),
-                                            level,
-                                            f.getYhat()
-                                    );
-                                })
+                                .map(c -> new DailyForecastResponse.HourlyForecast(
+                                        c.getCongestionHour(),
+                                        c.getCongestionLevel(),
+                                        c.getStayPopulation()
+                                ))
                                 .sorted(Comparator.comparing(DailyForecastResponse.HourlyForecast::getHour))
                                 .toList()
                 ))
                 .sorted(Comparator.comparing(DailyForecastResponse::getDate))
                 .toList();
     }
-
 
     @GetMapping("/weekly-summary/{name}")
     public List<DailySummaryResponse> getDailySummaryByName(@PathVariable String name) {

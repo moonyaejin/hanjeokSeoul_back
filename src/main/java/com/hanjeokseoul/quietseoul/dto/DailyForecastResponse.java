@@ -16,6 +16,6 @@ public class DailyForecastResponse {
     public static class HourlyForecast {
         private int hour;
         private String congestionLevel;
-        private Double yhat;
+        private Double stayPopulation;
     }
 }

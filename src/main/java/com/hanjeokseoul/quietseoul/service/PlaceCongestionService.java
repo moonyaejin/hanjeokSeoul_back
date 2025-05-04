@@ -131,5 +131,14 @@ public class PlaceCongestionService {
                 ));
     }
 
+    public Map<LocalDate, List<PlaceCongestion>> getWeeklyStayPopulation(String name, String type) {
+        LocalDate start = LocalDate.now().plusDays(1);
+        LocalDate end = start.plusDays(6);
+        List<PlaceCongestion> list = placeCongestionRepository.findByNameAndTypeAndCongestionDateBetween(name, type, start, end);
+
+        return list.stream()
+                .collect(Collectors.groupingBy(PlaceCongestion::getCongestionDate));
+    }
+
 
 }

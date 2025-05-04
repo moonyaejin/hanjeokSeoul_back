@@ -25,6 +25,10 @@ public class PlaceCongestion {
     private int congestionHour;
     private String congestionLevel;
 
+    @Column(name = "stay_population")
+    private Double stayPopulation;
+
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
