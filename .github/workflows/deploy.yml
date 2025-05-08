@@ -46,8 +46,10 @@ jobs:
         env:
           EC2_IP_ADDRESS: ${{ secrets.EC2_IP_ADDRESS }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$EC2_IP_ADDRESS <<EOF
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY
             docker pull $ECR_REPOSITORY:latest
             docker stop \$(docker ps -q) || true
             docker rm -f quietseoul || true
