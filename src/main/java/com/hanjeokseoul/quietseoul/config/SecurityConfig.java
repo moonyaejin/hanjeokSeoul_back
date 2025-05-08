@@ -79,7 +79,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://back-4bpd.onrender.com", "https://your-frontend-url.onrender.com")
+                        .allowedOrigins("*", "https://back-4bpd.onrender.com", "https://front-uyiz.onrender.com")
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);
