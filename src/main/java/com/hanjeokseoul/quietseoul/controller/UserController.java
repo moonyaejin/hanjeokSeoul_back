@@ -48,12 +48,18 @@ public class UserController {
     @Operation(summary = "로그인", description = "username과 password로 로그인하고 JWT 토큰을 발급받습니다.")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole());
-        return ResponseEntity.ok(Map.of("token", token));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+            );
+            UserEntity user = (UserEntity) authentication.getPrincipal();
+            String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole());
+            return ResponseEntity.ok(Map.of("token", token));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(401)
+                    .body(Map.of("error", "Invalid username or password"));
+        }
     }
 
     @Operation(summary = "로그아웃", description = "JWT를 클라이언트 측에서 삭제합니다. (서버 무효화는 따로 처리되지 않음)")
