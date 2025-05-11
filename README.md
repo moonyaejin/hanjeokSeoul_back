@@ -67,63 +67,109 @@ Python 전처리 (CSV 삽입, TM → WGS84 변환)
 
 ## 📸 주요 화면 미리보기
 
+---
+
 ### 🏠 메인 홈 화면
-| 위치 기반 추천 | 한적한 지역 추천 | 사용자 제보 기반 |
-|----------------|------------------|------------------|
-| ![](./assets/main1.jpeg) | ![](./assets/main2.jpeg) | ![](./assets/main3.jpeg) |
+
+<table>
+  <tr>
+    <td align="center"><b>위치 기반 추천</b></td>
+    <td align="center"><b>한적한 지역, 한적할 공원 추천</b></td>
+    <td align="center"><b>사용자 제보 기반 추천</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/main1.jpeg" width="250"/></td>
+    <td><img src="./assets/main2.jpeg" width="250"/></td>
+    <td><img src="./assets/main3.jpeg" width="250"/></td>
+  </tr>
+</table>
 
 ---
 
 ### 📍 내 주변 한적한 장소
-| 리스트 화면 | 상세 정보 |
-|-------------|-----------|
-| ![](./assets/hanjeokhan.jpeg) | ![](./assets/place_detail.jpeg) |
+
+<table>
+  <tr>
+    <td align="center"><b>혼잡도 및 리스트 화면</b></td>
+    <td align="center"><b>장소 상세 정보</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/hanjeokhan.jpeg" width="300"/></td>
+    <td><img src="./assets/place_detail.jpeg" width="300"/></td>
+  </tr>
+</table>
 
 ---
 
 ### 🧾 사용자 후기 작성
-![](./assets/review.jpeg)
+
+<table>
+  <tr>
+    <td align="center"><b>후기 등록 화면</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="./assets/review.jpeg" width="300"/></td>
+  </tr>
+</table>
 
 ---
 
 ### 🗺 한적한 지역 구 선택
-![](./assets/hanjeokhan_gu.jpeg)
+
+<table>
+  <tr>
+    <td align="center"><b>지역 선택 화면</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="./assets/hanjeokhan_gu.jpeg" width="300"/></td>
+  </tr>
+</table>
 
 ---
 
 ### 🌳 공원 추천 및 예상 혼잡도
-| 공원 리스트 | 혼잡도 분석 |
-|-------------|-------------|
-| ![](./assets/hanjeok_park.jpeg) | ![](./assets/park_detail.jpeg) |
+
+<table>
+  <tr>
+    <td align="center"><b>공원 리스트</b></td>
+    <td align="center"><b>혼잡도 분석</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/hanjeok_park.jpeg" width="300"/></td>
+    <td><img src="./assets/park_detail.jpeg" width="300"/></td>
+  </tr>
+</table>
+
 
 
 ## 🙋‍♀️ 주요 기여 (백엔드)
 
-> 백엔드는 2인이 협업하였으며, 저는 **시스템 아키텍처와 배포 인프라, 핵심 로직 구현을 주도**하였습니다.
+백엔드는 2인이 협업하였으며, 저는 시스템 아키텍처 설계, 배포 인프라 구성, 주요 API 및 추천 알고리즘 개발을 주도했습니다.
 
-### 🔹 데이터베이스 및 구조 설계
-- `Place`, `Area`, `User`, `Review`, `Suggestion` 등 주요 엔티티 모델링 및 정규화
-- 정적 장소 데이터 + 동적 리뷰/혼잡도 데이터 통합 기반 설계
+- **DB 및 시스템 구조 설계**  
+  - `Place`, `Area`, `User`, `Review`, `Suggestion` 엔티티 모델링 및 정규화  
+  - 정적 장소 데이터 + 사용자 리뷰/혼잡도 데이터를 통합 설계
 
-### 🔹 위치 기반 추천 알고리즘
-- 사용자 좌표 ↔ 기준 지역(116곳) 거리 계산
-- 실시간 인구 데이터 + 카테고리 필터 기반 추천 로직 구현
+- **위치 기반 추천 알고리즘 구현**  
+  - 사용자 좌표 ↔ 서울시 기준 지역(80여곳) 간 거리 계산  
+  - 실시간 인구 데이터 기반 + 카테고리(식당/카페/공원) 필터링 알고리즘 개발
 
-### 🔹 커뮤니티 흐름 및 이미지 업로드
-- 장소 제보 → 관리자 승인 → 리뷰 등록 → 이미지 업로드 전체 흐름 설계
-- S3 연동 및 URL 유효성 검증, 기본 이미지 fallback 처리
+- **제보 커뮤니티 흐름 및 이미지 업로드 처리**  
+  - 제보 등록 → 관리자 승인 → 리뷰 → 이미지 업로드 전 과정 설계 및 구현  
+  - 멀티파트 이미지 S3 업로드 + URL DB 연동, 기본 이미지 fallback 로직 구현
 
-### 🔹 CI/CD 및 HTTPS 대응
-- GitHub Actions + Docker + EC2 자동 배포 구성
-- HTTPS 대응을 위한 Render 전환 및 SSL 인증 적용
+- **CI/CD 및 HTTPS 대응**  
+  - GitHub Actions + Docker + EC2 기반 자동 배포 구성  
+  - 앱 HTTPS 대응을 위해 Render 전환 및 SSL 인증 자동화
 
-### 🔹 프론트 협업 및 API 문서화
-- Swagger 기반 전체 API 문서화
-- 예외 메시지/응답 포맷 통일, 환경설정 가이드 작성
+- **API 문서화 및 프론트 협업 최적화**  
+  - Swagger 기반 전체 API 명세서 작성  
+  - 응답 포맷 통일, 예외 메시지 개선, 환경설정 가이드 제공
 
-### 🔹 빌드 이슈 해결 주도
-- 마감 직전 Expo Android 빌드 오류 직접 해결  
-  (SDK 충돌, 환경변수 누락, fallback 조건 오류 등)
+- **Expo 빌드 이슈 분석 및 해결 주도**  
+  - 공모전 마감 직전 Android 빌드 실패 문제 대응  
+  - SDK 충돌, 환경변수 누락, fallback 처리 문제 디버깅 및 수정
+
 
 ---
 
