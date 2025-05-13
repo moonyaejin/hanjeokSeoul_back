@@ -12,7 +12,7 @@
 - **개발 기간**: 2025.03 ~ 2025.05  
 - **참여 인원**: 4명 (백엔드 2, 프론트 1, 데이터 1)  
 - **담당 역할**: 기획, 백엔드 전반 설계 및 핵심 기능 구현 주도
-- **성과**: 서울시 공공데이터 활용 경진대회 본선 진출 / Google Play 앱 출시 완료
+- **성과**: 서울시 공공데이터 활용 경진대회 본선 진출 / Google Play 앱 출시 테스트중
 
 ---
 
@@ -35,14 +35,14 @@
 
 ---
 
-## 🛠 기술 스택
+## 🛠️ 기술 스택
 
 | 구분 | 스택 |
 |------|------|
-| **Backend** | Spring Boot, JPA, MySQL, JWT, Swagger |
-| **Infra / DevOps** | AWS EC2, S3, Docker, GitHub Actions, Render |
-| **Frontend (협업)** | React Native (Expo Router) |
-| **Data** | Python, Pandas (CSV → DB 삽입, EPSG 좌표계 변환) |
+| **🧠 Backend** | ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white) ![JPA](https://img.shields.io/badge/JPA-007396?style=for-the-badge&logo=hibernate&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white) ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=black) |
+| **⚙️ Infra / DevOps** | ![AWS EC2](https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white) ![Amazon S3](https://img.shields.io/badge/Amazon%20S3-569A31?style=for-the-badge&logo=amazonaws&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=GitHubActions&logoColor=white) ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black) |
+| **📱 Frontend (협업)** | ![React Native](https://img.shields.io/badge/React%20Native-61DAFB?style=for-the-badge&logo=react&logoColor=black) ![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white) |
+| **📊 Data** | ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white) ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) |
 
 ---
 
