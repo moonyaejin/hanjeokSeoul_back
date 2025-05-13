@@ -101,14 +101,16 @@ Python 전처리 (CSV 삽입, TM → WGS84 변환)
 
 ---
 
-### 🧾 사용자 후기 작성
+### 🧾 사용자 작성
 
 <table>
   <tr>
     <td align="center"><b>후기 등록 화면</b></td>
+    <td align="center"><b>제보하기 화면</b></td>
   </tr>
   <tr>
     <td align="center"><img src="./assets/review.jpeg" width="300"/></td>
+    <td align="center"><img src="./assets/suggestion.jpg" width="300"/></td>
   </tr>
 </table>
 
