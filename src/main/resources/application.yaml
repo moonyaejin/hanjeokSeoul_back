@@ -32,8 +32,8 @@ cloud:
     s3:
       bucket: quietseoul-review-images
     credentials:
-      access-key: AKIAQ5B6W5E7IWRRB6MM
-      secret-key: 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
+      access-key: secret
+      secret-key: secret
     region:
       static: ap-northeast-2
 
