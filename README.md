@@ -65,10 +65,12 @@ Python 전처리 (CSV 삽입, TM → WGS84 변환)
 서울시 실시간 인구 API + 사용자 리뷰 데이터 기반 추천
 ```
 ---
-## 📸 주요 화면 미리보기
+## 📸 주요 화면
 
 📎 [화면 미리보기](./docs/screenshots.md)
+
 ---
+
 ## 🙋‍♀️ 주요 기여
 
 - **DB 및 시스템 구조 설계** (`Place`, `Area`, `Review`, `Suggestion`)  
@@ -78,6 +80,7 @@ Python 전처리 (CSV 삽입, TM → WGS84 변환)
 - **Swagger 기반 API 문서화** 및 프론트엔드 협업 최적화  
 
 📎 [기여 상세 보기](./docs/contribution.md)
+
 ---
 
 ## 📫 연락처
